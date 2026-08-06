@@ -9,165 +9,166 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --primary: #059669; 
-            --primary-light: #ECFDF5;
-            --bg-color: #F8FAFC;
-            --card-bg: #FFFFFF;
-            --text-main: #1E293B;
-            --text-muted: #64748B;
-            --border: #E2E8F0;
-            --success: #10B981;
-            --accent: #F59E0B;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
-        html, body { 
-            height: 100dvh;
-            min-height: 100vh;
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            width: 100%;
-            margin: 0;
-            padding: 8px;
-            overflow: hidden; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container { 
-            width: 100%; 
-            max-width: 850px; 
+        :root { 
+            --primary: #059669;  
+            --primary-light: #ECFDF5; 
+            --bg-color: #F8FAFC; 
+            --card-bg: #FFFFFF; 
+            --text-main: #1E293B; 
+            --text-muted: #64748B; 
+            --border: #E2E8F0; 
+            --success: #10B981; 
+            --accent: #F59E0B; 
+        } 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; } 
+         
+        html, body {  
+            min-height: 100dvh; 
             height: 100%;
-            background: var(--card-bg); 
-            border-radius: 16px; 
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); 
-            display: flex;
-            flex-direction: column;
-            border: 1px solid var(--border); 
+            background-color: var(--bg-color);  
+            color: var(--text-main);  
+            width: 100%; 
+            margin: 0; 
+            padding: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow-x: hidden;
+        } 
+ 
+        .container {  
+            width: 100%;  
+            max-width: 850px;  
+            height: 100%; 
+            max-height: 92vh;
+            background: var(--card-bg);  
+            border-radius: 16px;  
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);  
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid var(--border);  
             overflow: hidden; 
-        }
-
-        .header { 
-            flex-shrink: 0;
-            background: linear-gradient(135deg, #059669 0%, #047857 100%); 
-            color: white; 
-            padding: 16px 25px; 
+        } 
+ 
+        .header {  
+            flex-shrink: 0; 
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);  
+            color: white;  
+            padding: 14px 20px;  
             text-align: center; 
-        }
-        .header h1 { font-size: 19px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .header p { font-size: 12px; opacity: 0.9; }
-
-        .content { 
-            flex: 1;
-            padding: 16px 25px; 
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            gap: 12px;
-        }
-        
-        #setup-section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-        }
-        .setup-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border);
-            padding: 24px;
-            border-radius: 16px;
-            max-width: 420px;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            text-align: left;
-        }
-        .setup-card h2 { font-size: 18px; margin-bottom: 6px; color: var(--primary); text-align: center; }
-        .setup-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; text-align: center; }
-
-        .app-view {
-            display: none;
-            flex: 1;
-            flex-direction: column;
-            overflow: hidden;
-            gap: 12px;
-        }
-        .app-view.active {
-            display: flex;
-        }
-
-        .reflection-scroll-area {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            padding-right: 4px;
-        }
-        .discussion-meta { 
-            background: var(--primary-light); padding: 14px 18px; border-radius: 12px; 
-            border-left: 4px solid var(--primary); 
-        }
-        .discussion-meta h3 { font-size: 15px; color: var(--primary); margin-bottom: 4px; }
-        .discussion-meta p { font-size: 13px; color: var(--text-muted); }
-
-        .case-study-box { 
-            background: #FFFBEB; border: 1px solid #FDE68A; padding: 16px 18px; 
-            border-radius: 12px; 
-        }
-        .case-study-box h4 { color: #B45309; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .case-study-box p { font-size: 13px; line-height: 1.5; color: #78350F; }
-
-        .post-input-section { background: #F8FAFC; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border); }
-        .post-input-section h4 { font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-
-        .posts-container { display: flex; flex-direction: column; gap: 14px; }
-        .post-card { 
-            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; padding: 16px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
-        }
-        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .post-author { font-weight: 700; font-size: 14px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-        .post-badge { background: var(--primary-light); color: var(--primary); font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-        .post-time { font-size: 11px; color: var(--text-muted); }
-        .post-body { font-size: 14px; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; }
-        
-        .post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; }
-        .post-actions { display: flex; gap: 16px; }
-        .action-btn { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; transition: color 0.2s; }
-        .action-btn:hover, .action-btn.active { color: var(--primary); }
-        
-        .peer-review-box { 
-            background: #F1F5F9; padding: 10px 14px; border-radius: 8px; margin-top: 10px; 
-            font-size: 12px; display: flex; align-items: center; justify-content: space-between; 
-        }
-        
-        .result-box { text-align: center; padding: 30px 20px; margin: auto; }
-        .score-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; margin: 0 auto 16px auto; border: 4px solid var(--primary); }
-        .status-badge { font-size: 13px; color: var(--success); margin-top: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
-
-        .user-status-card { background: var(--primary-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #065F46; font-weight: 600; margin-bottom: 10px; }
-
-        .form-group { margin-bottom: 12px; text-align: left; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; color: var(--text-main); }
-        .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background-color: #FFFFFF; color: var(--text-main); }
-        .form-group textarea { resize: none; }
-        .form-group select:focus, .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); }
-        
-        .btn { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn:hover { background-color: #047857; }
-        .btn:disabled { background-color: #CBD5E1; cursor: not-allowed; }
-        .btn-secondary { background-color: #E2E8F0; color: var(--text-main); margin-top: 10px; }
-        .btn-secondary:hover { background-color: #CBD5E1; }
-        
-        .alert-box { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 10px; display: none; text-align: center; }
-        .alert-error { background: #FEF2F2; color: #991B1B; border: 1px solid #FCA5A5; }
-        .alert-info { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+        } 
+        .header h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; } 
+        .header p { font-size: 11px; opacity: 0.9; } 
+ 
+        .content {  
+            flex: 1; 
+            padding: 16px 20px;  
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            gap: 12px; 
+        } 
+         
+        #setup-section { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            flex: 1; 
+            padding: 10px; 
+            overflow-y: auto; 
+        } 
+        .setup-card { 
+            background: #FFFFFF; 
+            border: 1px solid var(--border); 
+            padding: 20px; 
+            border-radius: 16px; 
+            max-width: 420px; 
+            width: 100%; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+            text-align: left; 
+        } 
+        .setup-card h2 { font-size: 17px; margin-bottom: 6px; color: var(--primary); text-align: center; } 
+        .setup-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; text-align: center; } 
+ 
+        .app-view { 
+            display: none; 
+            flex: 1; 
+            flex-direction: column; 
+            overflow: hidden; 
+            gap: 12px; 
+        } 
+        .app-view.active { 
+            display: flex; 
+        } 
+ 
+        .reflection-scroll-area { 
+            flex: 1; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 14px; 
+            padding-right: 4px; 
+        } 
+        .discussion-meta {  
+            background: var(--primary-light); padding: 12px 16px; border-radius: 12px;  
+            border-left: 4px solid var(--primary);  
+        } 
+        .discussion-meta h3 { font-size: 14px; color: var(--primary); margin-bottom: 4px; } 
+        .discussion-meta p { font-size: 12px; color: var(--text-muted); } 
+ 
+        .case-study-box {  
+            background: #FFFBEB; border: 1px solid #FDE68A; padding: 14px 16px;  
+            border-radius: 12px;  
+        } 
+        .case-study-box h4 { color: #B45309; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; } 
+        .case-study-box p { font-size: 12px; line-height: 1.5; color: #78350F; } 
+ 
+        .post-input-section { background: #F8FAFC; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); } 
+        .post-input-section h4 { font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; } 
+ 
+        .posts-container { display: flex; flex-direction: column; gap: 12px; } 
+        .post-card {  
+            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; padding: 14px;  
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);  
+        } 
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; } 
+        .post-author { font-weight: 700; font-size: 13px; color: var(--text-main); display: flex; align-items: center; gap: 8px; } 
+        .post-badge { background: var(--primary-light); color: var(--primary); font-size: 10px; padding: 2px 6px; border-radius: 20px; font-weight: 600; } 
+        .post-time { font-size: 11px; color: var(--text-muted); } 
+        .post-body { font-size: 13px; line-height: 1.5; color: var(--text-main); margin-bottom: 10px; word-break: break-word; } 
+         
+        .post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 8px; } 
+        .post-actions { display: flex; gap: 16px; } 
+        .action-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; transition: color 0.2s; } 
+        .action-btn:hover, .action-btn.active { color: var(--primary); } 
+         
+        .peer-review-box {  
+            background: #F1F5F9; padding: 8px 12px; border-radius: 8px; margin-top: 8px;  
+            font-size: 11px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; 
+        } 
+         
+        .result-box { text-align: center; padding: 20px; margin: auto; width: 100%; max-width: 450px; } 
+        .score-circle { width: 100px; height: 100px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; margin: 0 auto 14px auto; border: 4px solid var(--primary); } 
+        .status-badge { font-size: 12px; color: var(--success); margin-top: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; } 
+ 
+        .user-status-card { background: var(--primary-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #065F46; font-weight: 600; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; } 
+ 
+        .form-group { margin-bottom: 10px; text-align: left; } 
+        .form-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; color: var(--text-main); } 
+        .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; outline: none; background-color: #FFFFFF; color: var(--text-main); } 
+        .form-group textarea { resize: none; } 
+        .form-group select:focus, .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); } 
+         
+        .btn { background-color: var(--primary); color: white; border: none; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; } 
+        .btn:hover { background-color: #047857; } 
+        .btn:disabled { background-color: #CBD5E1; cursor: not-allowed; } 
+        .btn-secondary { background-color: #E2E8F0; color: var(--text-main); margin-top: 8px; } 
+        .btn-secondary:hover { background-color: #CBD5E1; } 
+         
+        .alert-box { padding: 8px 12px; border-radius: 6px; font-size: 11px; margin-bottom: 8px; display: none; text-align: center; } 
+        .alert-error { background: #FEF2F2; color: #991B1B; border: 1px solid #FCA5A5; } 
+        .alert-info { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; } 
     </style>
 </head>
 <body>
@@ -177,14 +178,14 @@
         <h1><i class="fa-solid fa-lightbulb"></i> Ruang Refleksi & Peer Review SKI</h1>
         <p>Analisis Kritis, Studi Kasus, dan Evaluasi Teman Sejawat</p>
     </div>
-    
+     
     <div class="content">
         <!-- SETUP / LOGIN SECTION -->
         <div id="setup-section">
             <div class="setup-card">
                 <h2><i class="fa-solid fa-shield-halved"></i> Masuk Ruang Refleksi</h2>
                 <p id="setup-instruction">Pilih kelas dan nama kamu untuk melanjutkan.</p>
-                
+                 
                 <div id="alert-msg" class="alert-box"></div>
 
                 <div class="form-group">
@@ -202,7 +203,7 @@
                 </div>
 
                 <div id="dynamic-auth-area" style="display: none;">
-                    
+                     
                     <div id="register-fields" style="display: none;">
                         <div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 10px; border-radius: 8px; font-size: 11px; color: #B45309; margin-bottom: 12px;">
                             <i class="fa-solid fa-triangle-exclamation"></i> Akun ini belum memiliki password. Buat password baru agar akunmu aman.
@@ -241,17 +242,17 @@
 
         <!-- MAIN APP VIEW -->
         <div id="view-reflection" class="app-view">
-            
+             
             <!-- Screen A: Topik Selection -->
             <div id="ref-screen-welcome" class="app-view active" style="justify-content: center; align-items: center;">
-                <div class="setup-card" style="max-width: 500px;">
+                <div class="setup-card" style="max-width: 480px;">
                     <div class="user-status-card" id="user-status-welcome">
                         <span><i class="fa-solid fa-user-check"></i> <strong id="display-user-w">-</strong></span>
                         <button onclick="logoutApp()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
                     </div>
                     <h2><i class="fa-solid fa-book-open-reader"></i> Pilih Topik Refleksi & Evaluasi</h2>
                     <p>Pilih bab materi SKI untuk mulai menganalisis studi kasus dan mengevaluasi teman sejawat.</p>
-                    
+                     
                     <div class="form-group">
                         <label for="ref-materi">Pilih Topik / Bab Diskusi</label>
                         <select id="ref-materi" onchange="document.getElementById('start-ref-btn').disabled = !this.value">
@@ -269,7 +270,7 @@
                     <span><i class="fa-solid fa-user-check"></i> Masuk sebagai: <strong id="display-user-a">-</strong></span>
                     <button onclick="logoutApp()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
                 </div>
-                
+                 
                 <div class="reflection-scroll-area">
                     <div class="discussion-meta">
                         <h3 id="display-ref-topic-title">Topik: -</h3>
@@ -282,14 +283,14 @@
                     </div>
 
                     <div class="post-input-section">
-                        <h4><i class="fa-solid fa-pen-nib" style="color: var(--primary);"></i> Tuliskan / Edit Refleksi & Argumen Analitis Anda</h4>
+                        <h4><i class="fa-solid fa-pen-nib" style="color: var(--primary);"></i> Tuliskan Refleksi / Argumen Analitis Anda</h4>
                         <div class="form-group" style="margin-bottom: 8px;">
                             <textarea id="student-opinion" rows="3" placeholder="Tuliskan argumen analitis berdasarkan pemahaman materi Anda..."></textarea>
                         </div>
-                        <button class="btn" onclick="submitOpinion()"><i class="fa-solid fa-paper-plane"></i> Perbarui / Kirim Refleksi ke Forum</button>
+                        <button class="btn" onclick="submitOpinion()"><i class="fa-solid fa-paper-plane"></i> Kirim Refleksi ke Forum</button>
                     </div>
 
-                    <h4 style="font-size: 15px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
+                    <h4 style="font-size: 14px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
                         <span><i class="fa-solid fa-comments" style="color: var(--primary);"></i> Tanggapan & Peer Review Teman</span>
                         <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Beri ulasan/like pada pendapat teman</span>
                     </h4>
@@ -306,10 +307,10 @@
             <div id="ref-screen-result" class="app-view" style="justify-content: center; align-items: center;">
                 <div class="result-box">
                     <div class="score-circle" id="final-score">95</div>
-                    <div class="result-title" style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Refleksi & Evaluasi Selesai!</div>
-                    <p class="result-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Terima kasih telah aktif berpartisipasi memberikan analisis dan peer review.</p>
+                    <div class="result-title" style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Refleksi & Evaluasi Selesai!</div>
+                    <p class="result-desc" style="color: var(--text-muted); font-size: 12px; margin-bottom: 14px;">Terima kasih telah aktif berpartisipasi memberikan analisis dan peer review.</p>
                     <div class="status-badge" style="display: flex;"><i class="fa-solid fa-circle-check"></i> Partisipasi dan nilai refleksi tersimpan ke Google Sheets!</div>
-                    <button class="btn btn-secondary" onclick="restartReflection()" style="margin-top: 16px;"><i class="fa-solid fa-rotate-right"></i> Pilih Topik Lain</button>
+                    <button class="btn btn-secondary" onclick="restartReflection()" style="margin-top: 14px;"><i class="fa-solid fa-rotate-right"></i> Pilih Topik Lain</button>
                 </div>
             </div>
         </div>
@@ -324,8 +325,7 @@
     let studentClass = "";
     let globalStudentData = [];
     let currentStudentObj = null;
-    let hasSubmittedMyReflection = false; // Flag validasi apakah siswa sudah mengirim refleksi
-    let hasGivenAnyPeerReview = false;     // Flag validasi apakah siswa sudah memberi minimal 1 review ke teman
+    let hasSubmittedMyReflection = false;
 
     const topikDiskusiPerKelas = {
         "7": [
@@ -391,7 +391,7 @@
     function populateClassDropdown() {
         const kelasSelect = document.getElementById("kelasSelect");
         let classes = [...new Set(globalStudentData.map(item => item.kelas))].sort();
-        
+         
         kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
         classes.forEach(kelas => {
             let option = document.createElement("option");
@@ -404,10 +404,10 @@
     function updateNameDropdown() {
         const selectedKelas = document.getElementById("kelasSelect").value;
         const namaSelect = document.getElementById("namaSelect");
-        
+         
         namaSelect.innerHTML = '<option value="">-- Pilih Nama Siswa --</option>';
         document.getElementById("dynamic-auth-area").style.display = "none";
-        
+         
         if (!selectedKelas) {
             namaSelect.disabled = true;
             return;
@@ -538,7 +538,7 @@
     function showMainApp() {
         document.getElementById("setup-section").style.display = "none";
         document.getElementById("view-reflection").classList.add("active");
-        
+         
         let userInfoStr = `${studentName} (Kelas ${studentClass})`;
         document.getElementById("display-user-w").innerText = userInfoStr;
         document.getElementById("display-user-a").innerText = userInfoStr;
@@ -564,7 +564,7 @@
     function setupReflectionTopics() {
         const select = document.getElementById("ref-materi");
         select.innerHTML = '<option value="" disabled selected>-- Pilih Topik Refleksi --</option>';
-        
+         
         let baseLevel = getLevelKey(studentClass);
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
 
@@ -585,67 +585,19 @@
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
         currentTopicData = topics[idx];
 
-        const startBtn = document.getElementById("start-ref-btn");
-        startBtn.disabled = true;
-        startBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa Data Sheet...`;
+        hasSubmittedMyReflection = false; 
+        studentMyReflectionText = "";
+        studentPeerReviewData = "-";
+        studentLikesCount = 0;
 
-        // Membaca data dari Google Sheet untuk topik ini
-        let checkUrl = `${SCRIPT_URL}?action=getStudentReflection&nama=${encodeURIComponent(studentName)}&kelas=${encodeURIComponent(studentClass)}&materi=${encodeURIComponent(currentTopicData.title)}`;
+        document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
+        document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
+        document.getElementById("case-study-text").innerText = currentTopicData.case;
 
-        fetch(checkUrl)
-        .then(res => res.json())
-        .then(data => {
-            startBtn.disabled = false;
-            startBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Masuk Ruang Refleksi`;
-
-            if (data && data.found) {
-                // Jika siswa sudah pernah mengisi sebelumnya di sheet
-                hasSubmittedMyReflection = true;
-                hasGivenAnyPeerReview = true; // Dianggap valid karena sudah tersimpan di sheet
-                studentMyReflectionText = data.refleksi || "";
-                studentPeerReviewData = data.peerReview || "-";
-                studentLikesCount = data.likes || 0;
-
-                document.getElementById("student-opinion").value = studentMyReflectionText;
-            } else {
-                hasSubmittedMyReflection = false;
-                hasGivenAnyPeerReview = false;
-                studentMyReflectionText = "";
-                studentPeerReviewData = "-";
-                studentLikesCount = 0;
-                document.getElementById("student-opinion").value = "";
-            }
-
-            document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
-            document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
-            document.getElementById("case-study-text").innerText = currentTopicData.case;
-
-            document.getElementById("ref-screen-welcome").classList.remove("active");
-            document.getElementById("ref-screen-discussion").classList.add("active");
-            
-            renderPosts();
-        })
-        .catch(err => {
-            console.error("Gagal memeriksa data sheet:", err);
-            startBtn.disabled = false;
-            startBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Masuk Ruang Refleksi`;
-
-            hasSubmittedMyReflection = false;
-            hasGivenAnyPeerReview = false;
-            studentMyReflectionText = "";
-            studentPeerReviewData = "-";
-            studentLikesCount = 0;
-            document.getElementById("student-opinion").value = "";
-
-            document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
-            document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
-            document.getElementById("case-study-text").innerText = currentTopicData.case;
-
-            document.getElementById("ref-screen-welcome").classList.remove("active");
-            document.getElementById("ref-screen-discussion").classList.add("active");
-            
-            renderPosts();
-        });
+        document.getElementById("ref-screen-welcome").classList.remove("active");
+        document.getElementById("ref-screen-discussion").classList.add("active");
+         
+        renderPosts();
     }
 
     function submitOpinion() {
@@ -664,31 +616,14 @@
             class: studentClass,
             time: "Baru saja",
             text: text,
-            likes: studentLikesCount,
-            peerReview: studentPeerReviewData
+            likes: 0,
+            peerReview: "Menunggu ulasan teman..."
         };
 
         activePosts.unshift(newPost);
         document.getElementById("student-opinion").value = "";
         renderPosts();
-
-        // Simpan / Perbarui refleksi ke Google Sheets
-        let formData = new URLSearchParams({
-            action: 'refleksi',
-            nama: studentName,
-            kelas: studentClass,
-            materi: currentTopicData.title,
-            refleksi: studentMyReflectionText,
-            peerReview: studentPeerReviewData,
-            likes: studentLikesCount
-        });
-
-        fetch(SCRIPT_URL, { method: 'POST', body: formData })
-        .then(res => res.json())
-        .then(data => {
-            alert("Refleksi berhasil diperbarui dan disimpan ke forum!");
-        })
-        .catch(err => console.error("Gagal simpan refleksi:", err));
+        alert("Refleksi berhasil dikirim ke forum!");
     }
 
     function renderPosts() {
@@ -696,33 +631,33 @@
         container.innerHTML = "";
 
         if (activePosts.length === 0) {
-            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px;">Belum ada postingan refleksi. Jadilah yang pertama menulis!</div>';
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 15px;">Belum ada postingan refleksi. Jadilah yang pertama menulis!</div>';
             return;
         }
 
         activePosts.forEach(post => {
             let card = document.createElement("div");
             card.className = "post-card";
-            card.innerHTML = `
-                <div class="post-header">
-                    <div class="post-author">
-                        <i class="fa-solid fa-user-circle" style="color: var(--primary);"></i> ${post.author} 
-                        <span class="post-badge">Kelas ${post.class}</span>
-                    </div>
-                    <div class="post-time">${post.time}</div>
-                </div>
-                <div class="post-body">${post.text}</div>
-                <div class="post-footer">
-                    <div class="post-actions">
-                        <button class="action-btn" onclick="likePost(${post.id})">
-                            <i class="fa-solid fa-heart" style="color: #EF4444;"></i> Suka (${post.likes})
-                        </button>
-                    </div>
-                </div>
-                <div class="peer-review-box">
-                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> <strong>Ulasan Sejawat:</strong> ${post.peerReview || "-"}</span>
-                    <button onclick="givePeerReview(${post.id})" style="background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Beri Review</button>
-                </div>
+            card.innerHTML = ` 
+                <div class="post-header"> 
+                    <div class="post-author"> 
+                        <i class="fa-solid fa-user-circle" style="color: var(--primary);"></i> ${post.author}  
+                        <span class="post-badge">Kelas ${post.class}</span> 
+                    </div> 
+                    <div class="post-time">${post.time}</div> 
+                </div> 
+                <div class="post-body">${post.text}</div> 
+                <div class="post-footer"> 
+                    <div class="post-actions"> 
+                        <button class="action-btn" onclick="likePost(${post.id})"> 
+                            <i class="fa-solid fa-heart" style="color: #EF4444;"></i> Suka (${post.likes}) 
+                        </button> 
+                    </div> 
+                </div> 
+                <div class="peer-review-box"> 
+                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> <strong>Ulasan Sejawat:</strong> ${post.peerReview}</span> 
+                    <button onclick="givePeerReview(${post.id})" style="background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Beri Review</button> 
+                </div> 
             `;
             container.appendChild(card);
         });
@@ -736,14 +671,6 @@
                 studentLikesCount = post.likes;
             }
             renderPosts();
-
-            let updateData = new URLSearchParams({
-                action: 'updateRefleksi',
-                targetName: post.author,
-                targetMateri: currentTopicData.title,
-                likes: post.likes
-            });
-            fetch(SCRIPT_URL, { method: 'POST', body: updateData }).catch(err => console.error("Gagal update like:", err));
         }
     }
 
@@ -754,33 +681,16 @@
         let reviewText = prompt("Tuliskan ulasan atau catatan evaluasi untuk pendapat " + post.author + ":", "Analisis yang sangat komprehensif dan mudah dipahami.");
         if (reviewText && reviewText.trim() !== "") {
             post.peerReview = reviewText.trim();
-            hasGivenAnyPeerReview = true;
-
             if (post.author === studentName) {
                 studentPeerReviewData = post.peerReview;
             }
             renderPosts();
-
-            let updateData = new URLSearchParams({
-                action: 'updateRefleksi',
-                targetName: post.author,
-                targetMateri: currentTopicData.title,
-                peerReview: post.peerReview
-            });
-            fetch(SCRIPT_URL, { method: 'POST', body: updateData }).catch(err => console.error("Gagal update review:", err));
-            
-            alert("Peer review berhasil disimpan ke sistem!");
         }
     }
 
     function finishReflection() {
         if (!hasSubmittedMyReflection) {
-            alert("⚠️ Kamu belum mengirimkan refleksi ke forum! Tulis dan klik 'Perbarui / Kirim Refleksi ke Forum' terlebih dahulu sebelum menyelesaikan tugas ini.");
-            return;
-        }
-
-        if (!hasGivenAnyPeerReview) {
-            alert("⚠️ Maaf, Anda harus memberikan Peer Review (ulasan) kepada teman minimal 1 kali terlebih dahulu sebelum menyelesaikan refleksi!");
+            alert("⚠️ Kamu belum mengirimkan refleksi ke forum! Tulis dan klik 'Kirim Refleksi ke Forum' terlebih dahulu sebelum menyelesaikan tugas ini.");
             return;
         }
 

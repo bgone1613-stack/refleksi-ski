@@ -101,7 +101,6 @@
             display: flex;
         }
 
-        /* Reflection / Peer Review Styles */
         .reflection-scroll-area {
             flex: 1;
             overflow-y: auto;
@@ -180,7 +179,7 @@
     </div>
     
     <div class="content">
-        <!-- TAMPILAN LOGIN / SETUP PASSWORD -->
+        <!-- SETUP / LOGIN SECTION -->
         <div id="setup-section">
             <div class="setup-card">
                 <h2><i class="fa-solid fa-shield-halved"></i> Masuk Ruang Refleksi</h2>
@@ -202,7 +201,6 @@
                     </select>
                 </div>
 
-                <!-- Bagian Form Dinamis (Muncul setelah Nama dipilih) -->
                 <div id="dynamic-auth-area" style="display: none;">
                     
                     <div id="register-fields" style="display: none;">
@@ -241,10 +239,10 @@
             </div>
         </div>
 
-        <!-- UTAMA: RUANG REFLEKSI & PEER REVIEW -->
+        <!-- MAIN APP VIEW -->
         <div id="view-reflection" class="app-view">
             
-            <!-- Screen A: Pemilihan Topik Refleksi -->
+            <!-- Screen A: Topik Selection -->
             <div id="ref-screen-welcome" class="app-view active" style="justify-content: center; align-items: center;">
                 <div class="setup-card" style="max-width: 500px;">
                     <div class="user-status-card" id="user-status-welcome">
@@ -265,7 +263,7 @@
                 </div>
             </div>
 
-            <!-- Screen B: Ruang Refleksi Aktif -->
+            <!-- Screen B: Active Reflection & Discussion -->
             <div id="ref-screen-discussion" class="app-view">
                 <div class="user-status-card" id="user-status-active">
                     <span><i class="fa-solid fa-user-check"></i> Masuk sebagai: <strong id="display-user-a">-</strong></span>
@@ -304,7 +302,7 @@
                 <button class="btn" id="finish-btn" onclick="finishReflection()" style="background-color: var(--success); margin-top: 8px;"><i class="fa-solid fa-circle-check"></i> Selesaikan & Simpan Refleksi</button>
             </div>
 
-            <!-- Screen C: Hasil & Rekap Refleksi -->
+            <!-- Screen C: Result -->
             <div id="ref-screen-result" class="app-view" style="justify-content: center; align-items: center;">
                 <div class="result-box">
                     <div class="score-circle" id="final-score">95</div>
@@ -327,28 +325,87 @@
     let globalStudentData = [];
     let currentStudentObj = null;
 
-    // Daftar Topik Refleksi per Kelas
+    // Daftar Topik & Studi Kasus Lengkap Kelas 7, 8, dan 9
     const topikDiskusiPerKelas = {
         "7": [
-            { title: "Bab 1 : Strategi Dakwah Nabi di Makkah", case: "Mengapa kaum Quraisy begitu gigih menentang dakwah Nabi Muhammad SAW padahal beliau dikenal sebagai Al-Amin? Analisis faktor ekonomi dan sosial budayanya." },
-            { title: "Bab 2 : Piagam Madinah & Masyarakat Majemuk", case: "Bagaimana Piagam Madinah menjadi tonggak sejarah modern dalam mengatur toleransi antarumat beragama di masyarakat plural?" },
-            { title: "Bab 3 : Kepemimpinan Khulafaurrasyidin", case: "Dari keempat Khulafaurrasyidin, teladan apa yang paling relevan diterapkan pemimpin masa kini dalam hal transparansi dan keadilan?" }
+            { 
+                title: "Bab 1 : Dakwah Nabi Muhammad SAW di Makkah", 
+                case: "Mengapa kaum Quraisy begitu gigih menentang dakwah Nabi Muhammad SAW padahal beliau dikenal sebagai Al-Amin? Analisis faktor ekonomi, sosial, dan tradisi jahiliyah yang melatarbelakanginya." 
+            },
+            { 
+                title: "Bab 2 : Dakwah Nabi Muhammad SAW di Madinah", 
+                case: "Bagaimana strategi Nabi Muhammad SAW dalam mempersatukan kaum Muhajirin, Anshar, serta kelompok non-Muslim melalui Piagam Madinah dalam membangun masyarakat majemuk?" 
+            },
+            { 
+                title: "Bab 3 : Kepemimpinan Khulafaurrasyidin", 
+                case: "Dari keempat Khulafaurrasyidin, keteladanan kepemimpinan manakah yang menurut Anda paling mendesak untuk diterapkan dalam mengatasi krisis keadilan sosial di era modern?" 
+            },
+            { 
+                title: "Bab 4 : Daulah Umayyah", 
+                case: "Apa saja faktor utama keberhasilan ekspansi wilayah Daulah Umayyah, dan bagaimana dampaknya terhadap penyebaran peradaban Islam di berbagai belahan dunia?" 
+            },
+            { 
+                title: "Bab 5 : Gaya Kepemimpinan Umar bin Abdul Aziz", 
+                case: "Umar bin Abdul Aziz dikenal dengan gaya hidup sederhana dan kebijakan pro-rakyatnya. Bagaimana relevansi keteladanan beliau bagi para pemimpin di masa kini?" 
+            }
         ],
         "8": [
-            { title: "Bab 1 & 2 : Baitul Hikmah & Golden Age Abbasiyah", case: "Apa kunci utama keberhasilan ilmuwan muslim masa Daulah Abbasiyah dalam memadukan sains universal dengan nilai Islam?" },
-            { title: "Bab 3 & 4 : Semangat Persatuan Salahuddin al-Ayyubi", case: "Bagaimana cara Salahuddin al-Ayyubi merajut persatuan umat Islam lintas wilayah untuk membebaskan Baitulmaqdis?" },
-            { title: "Bab 5 : Daulah Mamluk sebagai Benteng Peradaban", case: "Mengapa pasukan Mamluk yang berlatar belakang budak militer mampu menghentikan invasi Mongol yang sangat kejam?" }
+            { 
+                title: "Bab 1 : Sejarah Peradaban Islam Pada Masa Daulah Abbasiyah", 
+                case: "Faktor apa saja yang menjadikan masa Daulah Abbasiyah sebagai era keemasan (golden age) peradaban Islam, khususnya dalam bidang politik dan sosial budaya?" 
+            },
+            { 
+                title: "Bab 2 : Peran Ilmuwan Muslim Dan Ulama Terhadap Peradaban Islam", 
+                case: "Bagaimana para ilmuwan muslim masa Abbasiyah berhasil mengintegrasikan ilmu pengetahuan umum (sains) dengan nilai-nilai keislaman tanpa kehilangan jati diri?" 
+            },
+            { 
+                title: "Bab 3 : Daulah Ayyubiyah: Cinta Tanah Air & Semangat Persatuan", 
+                case: "Bagaimana cara Salahuddin al-Ayyubi menumbuhkan rasa cinta tanah air dan merajut persatuan umat Islam lintas mazhab dan wilayah untuk menghadapi Perang Salib?" 
+            },
+            { 
+                title: "Bab 4 : Pemimpin Dan Ilmuwan Daulah Ayyubiyah: Teladan Cinta Dalam Karya", 
+                case: "Pilih salah satu tokoh ilmuwan atau pemimpin Daulah Ayyubiyah dan analisis bagaimana karya atau kontribusinya masih dirasakan manfaatnya hingga saat ini." 
+            },
+            { 
+                title: "Bab 5 : Daulah Mamluk: Benteng Peradaban Islam", 
+                case: "Mengapa pasukan Mamluk yang berlatar belakang militer/budak mampu menjadi penyelamat peradaban Islam dari kehancuran total akibat serangan bangsa Mongol?" 
+            }
         ],
         "9": [
-            { title: "Bab 1 & 2 : Jalur Masuk & Kerajaan Islam Nusantara", case: "Analisis mengapa pendekatan damai melalui perdagangan dan tasawuf lebih efektif dalam islamisasi Nusantara dibandingkan penaklukan militer." },
-            { title: "Bab 3 & 5 : Peran Pesantren & Walisanga", case: "Bagaimana strategi dakwah kultural Walisanga (seperti wayang & kesenian lokal) dapat diterima tanpa menghilangkan akidah tauhid?" },
-            { title: "Bab 4 & 6 : Kearifan Lokal & Ulama Nusantara", case: "Berikan contoh kearifan lokal di daerahmu yang selaras dengan nilai Islam dan bagaimana cara melestarikannya." }
+            { 
+                title: "Bab 1 : Sejarah Islam di Indonesia", 
+                case: "Analisis berbagai teori masuknya Islam ke Nusantara (Gujarat, Persia, Arab). Teori manakah yang menurut Anda paling kuat buktinya dan mengapa?" 
+            },
+            { 
+                title: "Bab 2 : Kerajaan Islam di Indonesia", 
+                case: "Bagaimana peran kerajaan-kerajaan Islam awal di Nusantara (seperti Samudera Pasai atau Demak) dalam jalur perdagangan internasional dan dakwah?" 
+            },
+            { 
+                title: "Bab 3 : Peran Pesantren dalam Dakwah Islam di Indonesia", 
+                case: "Mengapa pesantren menjadi pusat pendidikan tertua yang paling konsisten dalam mencetak kader ulama dan penjaga moral bangsa di Indonesia?" 
+            },
+            { 
+                title: "Bab 4 : Nilai-Nilai Islam dan Kearifan Lokal", 
+                case: "Berikan contoh konkret akulturasi antara nilai Islam dan budaya lokal di daerah Anda, serta bagaimana cara menjaga keselarasan keduanya." 
+            },
+            { 
+                title: "Bab 5 : Walisanga dalam Dakwah Islam di Indonesia", 
+                case: "Strategi dakwah kultural apa yang digunakan Walisanga (seperti pendekatan seni dan media sosial masa itu) sehingga Islam dapat diterima dengan damai oleh masyarakat?" 
+            },
+            { 
+                title: "Bab 6 : Syaikh Abdur Rauf As-Singkili & Syaikh Muhammad Arsyad Al-Banjari", 
+                case: "Bagaimana kontribusi intelektual Syaikh Abdur Rauf As-Singkili dan Syaikh Muhammad Arsyad Al-Banjari dalam menyebarkan pemikiran keislaman di Nusantara?" 
+            },
+            { 
+                title: "Bab 7 : Pendiri Organisasi Keagamaan di Indonesia", 
+                case: "Bagaimana peran para pendiri organisasi keagamaan besar di Indonesia dalam merajut kemerdekaan dan membangun moderasi beragama?" 
+            }
         ]
     };
 
     let activePosts = [
-        { id: 1, author: "Siti Rahma", class: "8A", time: "10 menit lalu", text: "Menurut analisis saya, kunci sukses Baitul Hikmah adalah sikap terbuka para khalifah Abbasiyah yang menghargai riset ilmiah tanpa memandang latar belakang agama penulisnya.", likes: 4, peerReview: "Analisis sangat tajam dan objektif." },
-        { id: 2, author: "Ahmad Fauzan", class: "8B", time: "25 menit lalu", text: "Betul sekali. Selain itu, dukungan finansial besar dari Baitulmal membuat para ilmuwan fokus eksperimen laboratorium tanpa memikirkan masalah ekonomi.", likes: 3, peerReview: "Argumen didukung fakta sejarah yang kuat." }
+        { id: 1, author: "Siti Rahma", class: "8A", time: "10 menit lalu", text: "Menurut analisis saya, kunci sukses peradaban masa lalu adalah sikap terbuka para pemimpin dalam menghargai riset ilmiah tanpa memandang latar belakang.", likes: 4, peerReview: "Analisis sangat tajam dan objektif." },
+        { id: 2, author: "Ahmad Fauzan", class: "8B", time: "25 menit lalu", text: "Betul sekali. Selain itu, dukungan sosial yang kuat membuat kemajuan ilmu pengetahuan dapat dirasakan langsung oleh masyarakat luas.", likes: 3, peerReview: "Argumen didukung fakta sejarah yang kuat." }
     ];
     let currentTopicData = null;
 
@@ -542,11 +599,20 @@
         location.reload();
     }
 
+    function getLevelKey(cls) {
+        if (!cls) return "8";
+        let c = cls.toString().toLowerCase();
+        if (c.includes("7") || c.includes("vii")) return "7";
+        if (c.includes("8") || c.includes("viii")) return "8";
+        if (c.includes("9") || c.includes("ix")) return "9";
+        return c.charAt(0);
+    }
+
     function setupReflectionTopics() {
         const select = document.getElementById("ref-materi");
         select.innerHTML = '<option value="" disabled selected>-- Pilih Topik Refleksi --</option>';
         
-        let baseLevel = studentClass.charAt(0); // Ambil angka pertama dari kelas misal "8A" -> "8"
+        let baseLevel = getLevelKey(studentClass);
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
 
         topics.forEach((t, index) => {
@@ -562,7 +628,7 @@
         const idx = select.value;
         if (idx === "") return;
 
-        let baseLevel = studentClass.charAt(0);
+        let baseLevel = getLevelKey(studentClass);
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
         currentTopicData = topics[idx];
 

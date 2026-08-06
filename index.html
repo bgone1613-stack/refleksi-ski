@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruang Diskusi & Refleksi SKI</title>
+    <title>Ruang Refleksi & Peer Review SKI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -59,37 +59,6 @@
         .header h1 { font-size: 19px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .header p { font-size: 12px; opacity: 0.9; }
 
-        /* Navigation Tabs */
-        .nav-tabs {
-            display: none;
-            background: #F1F5F9;
-            padding: 8px 16px;
-            gap: 8px;
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-        }
-        
         .content { 
             flex: 1;
             padding: 16px 25px; 
@@ -131,33 +100,6 @@
         .app-view.active {
             display: flex;
         }
-
-        /* Chat Section Styles */
-        .chat-container { 
-            flex: 1; 
-            min-height: 0; 
-            overflow-y: auto; 
-            background: #F1F5F9; 
-            border-radius: 12px; 
-            padding: 16px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 16px; 
-            border: 1px solid var(--border); 
-        }
-        .chat-item { display: flex; align-items: flex-start; gap: 12px; }
-        .chat-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #E2E8F0; border: 2px solid #FFFFFF; box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-shrink: 0; }
-        
-        .chat-bubble { flex-grow: 1; background: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border: 1px solid var(--border); }
-        .chat-bubble.my-message { background: #ECFDF5; border-color: #A7F3D0; }
-
-        .chat-user { font-weight: 700; font-size: 13px; color: var(--primary); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .chat-text { font-size: 14px; color: var(--text-main); line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
-        .chat-time { font-size: 11px; color: var(--text-muted); font-weight: 400; }
-        
-        .teacher-reply { background: #FFFFFF; border-left: 4px solid var(--primary); margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #065F46; line-height: 1.4; border: 1px solid #E2E8F0; }
-        .my-message .teacher-reply { background: #FFFFFF; }
-        .teacher-badge { font-weight: 700; font-size: 11px; color: #047857; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
 
         /* Reflection / Peer Review Styles */
         .reflection-scroll-area {
@@ -210,7 +152,7 @@
         .score-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; margin: 0 auto 16px auto; border: 4px solid var(--primary); }
         .status-badge { font-size: 13px; color: var(--success); margin-top: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
-        .user-status-card { background: var(--primary-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #065F46; font-weight: 600; }
+        .user-status-card { background: var(--primary-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #065F46; font-weight: 600; margin-bottom: 10px; }
 
         .form-group { margin-bottom: 12px; text-align: left; }
         .form-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; color: var(--text-main); }
@@ -227,38 +169,21 @@
         .alert-box { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 10px; display: none; text-align: center; }
         .alert-error { background: #FEF2F2; color: #991B1B; border: 1px solid #FCA5A5; }
         .alert-info { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
-
-        .input-card { 
-            flex-shrink: 0;
-            background: #FAFAFA; 
-            border: 1px solid var(--border); 
-            border-radius: 12px; 
-            padding: 10px 16px; 
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1><i class="fa-solid fa-mosque"></i> Ruang Diskusi & Refleksi SKI</h1>
-        <p>Kolaborasi, Tanya Jawab, Analisis Kritis, dan Evaluasi Teman Sejawat</p>
-    </div>
-
-    <!-- Navigasi Menu / Tab (Muncul Setelah Login) -->
-    <div class="nav-tabs" id="nav-tabs">
-        <button class="tab-btn active" id="tab-btn-chat" onclick="switchTab('chat')"><i class="fa-solid fa-comments"></i> Tanya Jawab Guru</button>
-        <button class="tab-btn" id="tab-btn-reflection" onclick="switchTab('reflection')"><i class="fa-solid fa-lightbulb"></i> Ruang Refleksi & Peer Review</button>
+        <h1><i class="fa-solid fa-lightbulb"></i> Ruang Refleksi & Peer Review SKI</h1>
+        <p>Analisis Kritis, Studi Kasus, dan Evaluasi Teman Sejawat</p>
     </div>
     
     <div class="content">
         <!-- TAMPILAN LOGIN / SETUP PASSWORD -->
         <div id="setup-section">
             <div class="setup-card">
-                <h2><i class="fa-solid fa-shield-halved"></i> Masuk Ruang Diskusi</h2>
+                <h2><i class="fa-solid fa-shield-halved"></i> Masuk Ruang Refleksi</h2>
                 <p id="setup-instruction">Pilih kelas dan nama kamu untuk melanjutkan.</p>
                 
                 <div id="alert-msg" class="alert-box"></div>
@@ -309,38 +234,23 @@
                     </div>
 
                     <button class="btn" id="authBtn" onclick="submitAuth()">
-                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Ruang Belajar
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Ruang Refleksi
                     </button>
                 </div>
 
             </div>
         </div>
 
-        <!-- TAB 1: TANYA JAWAB / CHAT UTAMA -->
-        <div id="view-chat" class="app-view">
-            <div class="chat-container" id="chat-container">
-                <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px;">Memuat ruang diskusi...</div>
-            </div>
-
-            <div class="input-card">
-                <div class="user-status-card" id="user-status">
-                    <span><i class="fa-solid fa-user-check"></i> Masuk sebagai: <strong id="display-user">-</strong></span>
-                    <button onclick="logoutChat()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <textarea id="chat-msg" placeholder="Tuliskan pertanyaan seputar materi SKI..." style="height: 48px;"></textarea>
-                </div>
-                <button class="btn" id="chat-btn" onclick="sendDiscussion()" disabled>
-                    <i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru
-                </button>
-            </div>
-        </div>
-
-        <!-- TAB 2: RUANG REFLEKSI & PEER REVIEW -->
+        <!-- UTAMA: RUANG REFLEKSI & PEER REVIEW -->
         <div id="view-reflection" class="app-view">
+            
             <!-- Screen A: Pemilihan Topik Refleksi -->
             <div id="ref-screen-welcome" class="app-view active" style="justify-content: center; align-items: center;">
                 <div class="setup-card" style="max-width: 500px;">
+                    <div class="user-status-card" id="user-status-welcome">
+                        <span><i class="fa-solid fa-user-check"></i> <strong id="display-user-w">-</strong></span>
+                        <button onclick="logoutApp()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
+                    </div>
                     <h2><i class="fa-solid fa-book-open-reader"></i> Pilih Topik Refleksi & Evaluasi</h2>
                     <p>Pilih bab materi SKI untuk mulai menganalisis studi kasus dan mengevaluasi teman sejawat.</p>
                     
@@ -357,6 +267,11 @@
 
             <!-- Screen B: Ruang Refleksi Aktif -->
             <div id="ref-screen-discussion" class="app-view">
+                <div class="user-status-card" id="user-status-active">
+                    <span><i class="fa-solid fa-user-check"></i> Masuk sebagai: <strong id="display-user-a">-</strong></span>
+                    <button onclick="logoutApp()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
+                </div>
+                
                 <div class="reflection-scroll-area">
                     <div class="discussion-meta">
                         <h3 id="display-ref-topic-title">Topik: -</h3>
@@ -405,13 +320,12 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznmY7oswFswkOctvTUIKf6C5O-zbTsNJTejvapzudXuZb7uRq8kfdm6OH4_hPDdzXi/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxrEIVeOJb_lcwIzD21cEI1U561qIbwqFv3Ou8AT5xRrNKLG8Z0OJUJglDWSZz-rsNC/exec';
 
     let studentName = "";
     let studentClass = "";
     let globalStudentData = [];
     let currentStudentObj = null;
-    let pollInterval = null;
 
     // Daftar Topik Refleksi per Kelas
     const topikDiskusiPerKelas = {
@@ -439,8 +353,8 @@
     let currentTopicData = null;
 
     window.onload = function() {
-        let savedName = localStorage.getItem('chatLoggedInName');
-        let savedClass = localStorage.getItem('chatLoggedInClass');
+        let savedName = localStorage.getItem('refLoggedInName');
+        let savedClass = localStorage.getItem('refLoggedInClass');
 
         if (savedName && savedClass) {
             studentName = savedName;
@@ -529,7 +443,7 @@
             registerFields.style.display = "none";
             loginFields.style.display = "block";
             document.getElementById("existingPassword").value = "";
-            document.getElementById("authBtn").innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+            document.getElementById("authBtn").innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Refleksi`;
         }
     }
 
@@ -593,280 +507,180 @@
                 studentName = nama;
                 studentClass = kelas;
 
-                localStorage.setItem('chatLoggedInName', studentName);
-                localStorage.setItem('chatLoggedInClass', studentClass);
+                localStorage.setItem('refLoggedInName', studentName);
+                localStorage.setItem('refLoggedInClass', studentClass);
 
                 showMainApp();
             } else {
                 showAlert(response.message, "error");
                 authBtn.disabled = false;
-                authBtn.innerHTML = isRegistering ? `<i class="fa-solid fa-user-plus"></i> Buat Password & Masuk` : `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+                authBtn.innerHTML = isRegistering ? `<i class="fa-solid fa-user-plus"></i> Buat Password & Masuk` : `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Refleksi`;
             }
         })
         .catch(err => {
             console.error(err);
             showAlert("Terjadi kesalahan koneksi ke server.", "error");
             authBtn.disabled = false;
-            authBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+            authBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Refleksi`;
         });
     }
 
     function showMainApp() {
         document.getElementById("setup-section").style.display = "none";
-        document.getElementById("nav-tabs").style.display = "flex";
-        document.getElementById("view-chat").classList.add("active");
-        document.getElementById("display-user").innerText = `${studentName} (Kelas ${studentClass})`;
+        document.getElementById("view-reflection").classList.add("active");
+        
+        let userInfoStr = `${studentName} (Kelas ${studentClass})`;
+        document.getElementById("display-user-w").innerText = userInfoStr;
+        document.getElementById("display-user-a").innerText = userInfoStr;
 
         setupReflectionTopics();
-        fetchDiscussions();
-        if (!pollInterval) {
-            pollInterval = setInterval(fetchDiscussions, 10000); 
-        }
     }
 
-    function switchTab(tabName) {
-        document.getElementById("tab-btn-chat").classList.remove("active");
-        document.getElementById("tab-btn-reflection").classList.remove("active");
-        document.getElementById("view-chat").classList.remove("active");
-        document.getElementById("view-reflection").classList.remove("active");
-
-        if (tabName === 'chat') {
-            document.getElementById("tab-btn-chat").classList.add("active");
-            document.getElementById("view-chat").classList.add("active");
-        } else {
-            document.getElementById("tab-btn-reflection").classList.add("active");
-            document.getElementById("view-reflection").classList.add("active");
-        }
-    }
-
-    function logoutChat() {
-        localStorage.removeItem('chatLoggedInName');
-        localStorage.removeItem('chatLoggedInClass');
-        if (pollInterval) clearInterval(pollInterval);
+    function logoutApp() {
+        localStorage.removeItem('refLoggedInName');
+        localStorage.removeItem('refLoggedInClass');
         location.reload();
     }
 
-    document.getElementById("chat-msg").addEventListener("input", function() {
-        const msg = this.value.trim();
-        document.getElementById("chat-btn").disabled = !msg;
-    });
-
-    function fetchDiscussions() {
-        fetch(SCRIPT_URL + "?action=getDiskusi")
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById("chat-container");
-            container.innerHTML = "";
-
-            if (!data || data.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px;">Belum ada topik diskusi. Jadilah yang pertama memulai!</div>`;
-                return;
-            }
-
-            data.forEach(item => {
-                let dateStr = new Date(item.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
-                let cleanName = (item.name || 'User').replace(/\s*\(.*\)/, '').trim();
-                let avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(cleanName)}&background=059669&color=fff&size=128&bold=true`;
-                
-                let isMyMessage = (item.name === studentName);
-                let bubbleClass = isMyMessage ? "chat-bubble my-message" : "chat-bubble";
-                let nameLabel = isMyMessage ? `${escapeHtml(item.name)} <span style="background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: normal; margin-left: 6px;">(Anda)</span>` : escapeHtml(item.name);
-
-                let replyHTML = "";
-                if (item.reply && item.reply.trim() !== "") {
-                    replyHTML = `
-                        <div class="teacher-reply">
-                            <div class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> Balasan Guru SKI</div>
-                            ${escapeHtml(item.reply)}
-                        </div>
-                    `;
-                }
-
-                let bubble = `
-                    <div class="chat-item">
-                        <img src="${avatarUrl}" alt="${escapeHtml(item.name)}" class="chat-avatar">
-                        <div class="${bubbleClass}">
-                            <div class="chat-user">
-                                <span>${nameLabel}</span>
-                                <span class="chat-time">${dateStr}</span>
-                            </div>
-                            <div class="chat-text">${escapeHtml(item.content)}</div>
-                            ${replyHTML}
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += bubble;
-            });
-            container.scrollTop = container.scrollHeight;
-        })
-        .catch(err => {
-            console.error("Gagal memuat diskusi:", err);
-        });
-    }
-
-    function sendDiscussion() {
-        const msg = document.getElementById("chat-msg").value.trim();
-        const chatBtn = document.getElementById("chat-btn");
-
-        if (!msg || !studentName) return;
-
-        chatBtn.disabled = true;
-        chatBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...`;
-
-        const payload = {
-            action: "diskusi",
-            name: studentName,
-            class: studentClass,
-            content: msg
-        };
-
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }).then(() => {
-            document.getElementById("chat-msg").value = "";
-            chatBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru`;
-            chatBtn.disabled = true;
-            setTimeout(fetchDiscussions, 1000); 
-        }).catch(err => {
-            alert("Gagal mengirim pesan diskusi.");
-            chatBtn.disabled = false;
-            chatBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru`;
-        });
-    }
-
-    /* --- Logic Ruang Refleksi & Peer Review --- */
     function setupReflectionTopics() {
-        const materiSelect = document.getElementById('ref-materi');
-        materiSelect.innerHTML = '<option value="" disabled selected>-- Pilih Topik Refleksi --</option>';
+        const select = document.getElementById("ref-materi");
+        select.innerHTML = '<option value="" disabled selected>-- Pilih Topik Refleksi --</option>';
+        
+        let baseLevel = studentClass.charAt(0); // Ambil angka pertama dari kelas misal "8A" -> "8"
+        let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
 
-        let classKey = studentClass ? studentClass.toString() : "8";
-        let topics = topikDiskusiPerKelas[classKey] || topikDiskusiPerKelas["8"];
-
-        topics.forEach((topik, index) => {
-            const opt = document.createElement('option');
+        topics.forEach((t, index) => {
+            let opt = document.createElement("option");
             opt.value = index;
-            opt.textContent = topik.title;
-            materiSelect.appendChild(opt);
+            opt.textContent = t.title;
+            select.appendChild(opt);
         });
     }
 
     function startReflection() {
-        const materiIndex = document.getElementById('ref-materi').value;
-        if (materiIndex === "") return;
+        const select = document.getElementById("ref-materi");
+        const idx = select.value;
+        if (idx === "") return;
 
-        let classKey = studentClass ? studentClass.toString() : "8";
-        currentTopicData = topikDiskusiPerKelas[classKey][materiIndex];
+        let baseLevel = studentClass.charAt(0);
+        let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
+        currentTopicData = topics[idx];
 
-        document.getElementById('display-ref-topic-title').textContent = currentTopicData.title;
-        document.getElementById('display-ref-student-info').textContent = `${studentName} (Kelas ${studentClass})`;
-        document.getElementById('case-study-text').textContent = currentTopicData.case;
+        document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
+        document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
+        document.getElementById("case-study-text").innerText = currentTopicData.case;
 
-        renderReflectionPosts();
-
-        document.getElementById('ref-screen-welcome').classList.remove('active');
-        document.getElementById('ref-screen-discussion').classList.add('active');
+        document.getElementById("ref-screen-welcome").classList.remove("active");
+        document.getElementById("ref-screen-discussion").classList.add("active");
+        
+        renderPosts();
     }
 
-    function renderReflectionPosts() {
-        const container = document.getElementById('posts-container');
-        container.innerHTML = '';
-        
+    function submitOpinion() {
+        const text = document.getElementById("student-opinion").value.trim();
+        if (!text) {
+            alert("Tuliskan argumen analitis atau refleksi Anda terlebih dahulu!");
+            return;
+        }
+
+        let newPost = {
+            id: Date.now(),
+            author: studentName,
+            class: studentClass,
+            time: "Baru saja",
+            text: text,
+            likes: 0,
+            peerReview: "Menunggu ulasan teman..."
+        };
+
+        activePosts.unshift(newPost);
+        document.getElementById("student-opinion").value = "";
+        renderPosts();
+    }
+
+    function renderPosts() {
+        const container = document.getElementById("posts-container");
+        container.innerHTML = "";
+
+        if (activePosts.length === 0) {
+            container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 20px;">Belum ada postingan refleksi. Jadilah yang pertama menulis!</div>';
+            return;
+        }
+
         activePosts.forEach(post => {
-            const card = document.createElement('div');
-            card.className = 'post-card';
+            let card = document.createElement("div");
+            card.className = "post-card";
             card.innerHTML = `
                 <div class="post-header">
-                    <div class="post-author"><i class="fa-solid fa-user-circle" style="color: var(--primary);"></i> ${escapeHtml(post.author)} <span class="post-badge">Kelas ${post.class}</span></div>
+                    <div class="post-author">
+                        <i class="fa-solid fa-user-circle" style="color: var(--primary);"></i> ${post.author} 
+                        <span class="post-badge">Kelas ${post.class}</span>
+                    </div>
                     <div class="post-time">${post.time}</div>
                 </div>
-                <div class="post-body">${escapeHtml(post.text)}</div>
-                <div class="peer-review-box">
-                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> Review: <em>"${escapeHtml(post.peerReview)}"</em></span>
-                    <button class="action-btn" onclick="givePeerReview(${post.id})"><i class="fa-solid fa-pen"></i> Beri Review</button>
-                </div>
+                <div class="post-body">${post.text}</div>
                 <div class="post-footer">
                     <div class="post-actions">
-                        <button class="action-btn" onclick="likePost(${post.id})"><i class="fa-solid fa-thumbs-up"></i> Suka (${post.likes})</button>
+                        <button class="action-btn" onclick="likePost(${post.id})">
+                            <i class="fa-solid fa-heart" style="color: #EF4444;"></i> Suka (${post.likes})
+                        </button>
                     </div>
+                </div>
+                <div class="peer-review-box">
+                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> <strong>Ulasan Sejawat:</strong> ${post.peerReview}</span>
+                    <button onclick="givePeerReview(${post.id})" style="background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Beri Review</button>
                 </div>
             `;
             container.appendChild(card);
         });
     }
 
-    function submitOpinion() {
-        const opinionText = document.getElementById('student-opinion').value.trim();
-        if (!opinionText || opinionText.length < 5) {
-            alert('Mohon tuliskan refleksi atau argumen analitis minimal 5 karakter.');
-            return;
-        }
-        
-        const newPost = {
-            id: activePosts.length + 1,
-            author: studentName,
-            class: studentClass,
-            time: 'Baru saja',
-            text: opinionText,
-            likes: 0,
-            peerReview: 'Menunggu ulasan sejawat'
-        };
-        
-        activePosts.unshift(newPost);
-        document.getElementById('student-opinion').value = '';
-        renderReflectionPosts();
-        alert('Refleksi berhasil dikirim ke forum!');
-    }
-
-    function likePost(id) {
-        const post = activePosts.find(p => p.id === id);
+    function likePost(postId) {
+        let post = activePosts.find(p => p.id === postId);
         if (post) {
             post.likes += 1;
-            renderReflectionPosts();
+            renderPosts();
         }
     }
 
-    function givePeerReview(id) {
-        const review = prompt("Berikan tanggapan atau evaluasi singkat untuk argumen teman Anda:");
-        if (review) {
-            const post = activePosts.find(p => p.id === id);
-            if (post) {
-                post.peerReview = review;
-                renderReflectionPosts();
-                alert('Peer review berhasil disimpan!');
-            }
+    function givePeerReview(postId) {
+        let post = activePosts.find(p => p.id === postId);
+        if (!post) return;
+
+        let reviewText = prompt("Tuliskan ulasan atau catatan evaluasi untuk pendapat " + post.author + ":", "Analisis yang sangat komprehensif dan mudah dipahami.");
+        if (reviewText && reviewText.trim() !== "") {
+            post.peerReview = reviewText.trim();
+            renderPosts();
         }
     }
 
     function finishReflection() {
-        document.getElementById('ref-screen-discussion').classList.remove('active');
-        document.getElementById('ref-screen-result').classList.add('active');
+        document.getElementById("ref-screen-discussion").classList.remove("active");
+        document.getElementById("ref-screen-result").classList.add("active");
+        
+        let randomScore = Math.floor(Math.random() * (100 - 85 + 1)) + 85;
+        document.getElementById("final-score").innerText = randomScore;
     }
 
     function restartReflection() {
-        document.getElementById('ref-screen-result').classList.remove('active');
-        document.getElementById('ref-screen-welcome').classList.add('active');
-        document.getElementById('ref-materi').selectedIndex = 0;
-        document.getElementById('start-ref-btn').disabled = true;
+        document.getElementById("ref-screen-result").classList.remove("active");
+        document.getElementById("ref-screen-welcome").classList.add("active");
+        document.getElementById("ref-materi").value = "";
+        document.getElementById("start-ref-btn").disabled = true;
     }
 
     function showAlert(message, type) {
         const alertBox = document.getElementById("alert-msg");
-        alertBox.textContent = message;
-        alertBox.className = `alert-box alert-${type}`;
         alertBox.style.display = "block";
+        alertBox.className = `alert-box alert-${type}`;
+        alertBox.innerHTML = message;
     }
 
     function hideAlert() {
-        document.getElementById("alert-msg").style.display = "none";
-    }
-
-    function escapeHtml(text) {
-        if (!text) return "";
-        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const alertBox = document.getElementById("alert-msg");
+        alertBox.style.display = "none";
     }
 </script>
+
 </body>
 </html>

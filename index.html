@@ -319,7 +319,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxphetlWfk3PXr8yIvmunrHM6w3SzLGhPul5xHc1Z2cmxafpUUmQTFJO7xnVoxPZ_OO/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2VzfIfMPL7isOM8N7OY0QyLOY9DWsS3RHS8hFOi-SNEonKmH3u6Ql5uLJX3ENQF5B/exec';
 
     let studentName = "";
     let studentClass = "";
@@ -678,12 +678,15 @@
         let post = activePosts.find(p => p.id === postId);
         if (!post) return;
 
+        if (post.author === studentName) {
+            alert("Kamu tidak dapat memberikan peer review pada postinganmu sendiri.");
+            return;
+        }
+
         let reviewText = prompt("Tuliskan ulasan atau catatan evaluasi untuk pendapat " + post.author + ":", "Analisis yang sangat komprehensif dan mudah dipahami.");
         if (reviewText && reviewText.trim() !== "") {
             post.peerReview = reviewText.trim();
-            if (post.author === studentName) {
-                studentPeerReviewData = post.peerReview;
-            }
+            studentPeerReviewData = `Review untuk ${post.author}: ${reviewText.trim()}`;
             renderPosts();
         }
     }

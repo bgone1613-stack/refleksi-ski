@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Diskusi & Refleksi SKI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #059669; 
+            --primary-light: #ECFDF5;
+            --bg-color: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --accent: #F59E0B;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        html, body { 
+            height: 100dvh;
+            min-height: 100vh;
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            width: 100%;
+            margin: 0;
+            padding: 8px;
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 850px; 
+            height: 100%;
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); 
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border); 
+            overflow: hidden; 
+        }
+
+        .header { 
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+            color: white; 
+            padding: 16px 25px; 
+            text-align: center; 
+        }
+        .header h1 { font-size: 19px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header p { font-size: 12px; opacity: 0.9; }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: none;
+            background: #F1F5F9;
+            padding: 8px 16px;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+        
+        .content { 
+            flex: 1;
+            padding: 16px 25px; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            gap: 12px;
+        }
+        
+        #setup-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+        .setup-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .setup-card h2 { font-size: 18px; margin-bottom: 6px; color: var(--primary); text-align: center; }
+        .setup-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; text-align: center; }
+
+        .app-view {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            overflow: hidden;
+            gap: 12px;
+        }
+        .app-view.active {
+            display: flex;
+        }
+
+        /* Chat Section Styles */
+        .chat-container { 
+            flex: 1; 
+            min-height: 0; 
+            overflow-y: auto; 
+            background: #F1F5F9; 
+            border-radius: 12px; 
+            padding: 16px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+            border: 1px solid var(--border); 
+        }
+        .chat-item { display: flex; align-items: flex-start; gap: 12px; }
+        .chat-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #E2E8F0; border: 2px solid #FFFFFF; box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-shrink: 0; }
+        
+        .chat-bubble { flex-grow: 1; background: white; padding: 14px 18px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border: 1px solid var(--border); }
+        .chat-bubble.my-message { background: #ECFDF5; border-color: #A7F3D0; }
+
+        .chat-user { font-weight: 700; font-size: 13px; color: var(--primary); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-text { font-size: 14px; color: var(--text-main); line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
+        .chat-time { font-size: 11px; color: var(--text-muted); font-weight: 400; }
+        
+        .teacher-reply { background: #FFFFFF; border-left: 4px solid var(--primary); margin-top: 10px; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #065F46; line-height: 1.4; border: 1px solid #E2E8F0; }
+        .my-message .teacher-reply { background: #FFFFFF; }
+        .teacher-badge { font-weight: 700; font-size: 11px; color: #047857; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+
+        /* Reflection / Peer Review Styles */
+        .reflection-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-right: 4px;
+        }
+        .discussion-meta { 
+            background: var(--primary-light); padding: 14px 18px; border-radius: 12px; 
+            border-left: 4px solid var(--primary); 
+        }
+        .discussion-meta h3 { font-size: 15px; color: var(--primary); margin-bottom: 4px; }
+        .discussion-meta p { font-size: 13px; color: var(--text-muted); }
+
+        .case-study-box { 
+            background: #FFFBEB; border: 1px solid #FDE68A; padding: 16px 18px; 
+            border-radius: 12px; 
+        }
+        .case-study-box h4 { color: #B45309; font-size: 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .case-study-box p { font-size: 13px; line-height: 1.5; color: #78350F; }
+
+        .post-input-section { background: #F8FAFC; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border); }
+        .post-input-section h4 { font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+        .posts-container { display: flex; flex-direction: column; gap: 14px; }
+        .post-card { 
+            background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; padding: 16px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); 
+        }
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .post-author { font-weight: 700; font-size: 14px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .post-badge { background: var(--primary-light); color: var(--primary); font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+        .post-time { font-size: 11px; color: var(--text-muted); }
+        .post-body { font-size: 14px; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; }
+        
+        .post-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 10px; }
+        .post-actions { display: flex; gap: 16px; }
+        .action-btn { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; transition: color 0.2s; }
+        .action-btn:hover, .action-btn.active { color: var(--primary); }
+        
+        .peer-review-box { 
+            background: #F1F5F9; padding: 10px 14px; border-radius: 8px; margin-top: 10px; 
+            font-size: 12px; display: flex; align-items: center; justify-content: space-between; 
+        }
+        
+        .result-box { text-align: center; padding: 30px 20px; margin: auto; }
+        .score-circle { width: 110px; height: 110px; border-radius: 50%; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; margin: 0 auto 16px auto; border: 4px solid var(--primary); }
+        .status-badge { font-size: 13px; color: var(--success); margin-top: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+        .user-status-card { background: var(--primary-light); border: 1px solid #A7F3D0; border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: #065F46; font-weight: 600; }
+
+        .form-group { margin-bottom: 12px; text-align: left; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px; color: var(--text-main); }
+        .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background-color: #FFFFFF; color: var(--text-main); }
+        .form-group textarea { resize: none; }
+        .form-group select:focus, .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1); }
+        
+        .btn { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:hover { background-color: #047857; }
+        .btn:disabled { background-color: #CBD5E1; cursor: not-allowed; }
+        .btn-secondary { background-color: #E2E8F0; color: var(--text-main); margin-top: 10px; }
+        .btn-secondary:hover { background-color: #CBD5E1; }
+        
+        .alert-box { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 10px; display: none; text-align: center; }
+        .alert-error { background: #FEF2F2; color: #991B1B; border: 1px solid #FCA5A5; }
+        .alert-info { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+
+        .input-card { 
+            flex-shrink: 0;
+            background: #FAFAFA; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 10px 16px; 
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1><i class="fa-solid fa-mosque"></i> Ruang Diskusi & Refleksi SKI</h1>
+        <p>Kolaborasi, Tanya Jawab, Analisis Kritis, dan Evaluasi Teman Sejawat</p>
+    </div>
+
+    <!-- Navigasi Menu / Tab (Muncul Setelah Login) -->
+    <div class="nav-tabs" id="nav-tabs">
+        <button class="tab-btn active" id="tab-btn-chat" onclick="switchTab('chat')"><i class="fa-solid fa-comments"></i> Tanya Jawab Guru</button>
+        <button class="tab-btn" id="tab-btn-reflection" onclick="switchTab('reflection')"><i class="fa-solid fa-lightbulb"></i> Ruang Refleksi & Peer Review</button>
+    </div>
+    
+    <div class="content">
+        <!-- TAMPILAN LOGIN / SETUP PASSWORD -->
+        <div id="setup-section">
+            <div class="setup-card">
+                <h2><i class="fa-solid fa-shield-halved"></i> Masuk Ruang Diskusi</h2>
+                <p id="setup-instruction">Pilih kelas dan nama kamu untuk melanjutkan.</p>
+                
+                <div id="alert-msg" class="alert-box"></div>
+
+                <div class="form-group">
+                    <label for="kelasSelect">Pilih Kelas</label>
+                    <select id="kelasSelect" onchange="updateNameDropdown()">
+                        <option value="">-- Memuat Data Kelas... --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="namaSelect">Pilih Nama Siswa</label>
+                    <select id="namaSelect" onchange="checkStudentStatus()" disabled>
+                        <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                    </select>
+                </div>
+
+                <!-- Bagian Form Dinamis (Muncul setelah Nama dipilih) -->
+                <div id="dynamic-auth-area" style="display: none;">
+                    
+                    <div id="register-fields" style="display: none;">
+                        <div style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 10px; border-radius: 8px; font-size: 11px; color: #B45309; margin-bottom: 12px;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Akun ini belum memiliki password. Buat password baru agar akunmu aman.
+                        </div>
+                        <div class="form-group">
+                            <label>Buat Password Baru</label>
+                            <input type="password" id="newPassword" placeholder="Minimal 4 karakter...">
+                        </div>
+                        <div class="form-group">
+                            <label>Konfirmasi Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Ketik ulang password...">
+                        </div>
+                        <div class="form-group">
+                            <label>Hint / Petunjuk Sandi (Opsional)</label>
+                            <input type="text" id="passwordHint" placeholder="Contoh: Tanggal lahir / Nama ibu...">
+                        </div>
+                    </div>
+
+                    <div id="login-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Masukkan Password Kamu</label>
+                            <input type="password" id="existingPassword" placeholder="Masukkan password akunmu...">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 11px;">
+                            <a href="#" onclick="showHint()" style="color: var(--primary); text-decoration: none; font-weight: 600;"><i class="fa-solid fa-circle-question"></i> Lupa Password?</a>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="authBtn" onclick="submitAuth()">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Ruang Belajar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 1: TANYA JAWAB / CHAT UTAMA -->
+        <div id="view-chat" class="app-view">
+            <div class="chat-container" id="chat-container">
+                <div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px;">Memuat ruang diskusi...</div>
+            </div>
+
+            <div class="input-card">
+                <div class="user-status-card" id="user-status">
+                    <span><i class="fa-solid fa-user-check"></i> Masuk sebagai: <strong id="display-user">-</strong></span>
+                    <button onclick="logoutChat()" style="background: none; border: none; color: #DC2626; cursor: pointer; font-size: 11px; font-weight: 700;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar</button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <textarea id="chat-msg" placeholder="Tuliskan pertanyaan seputar materi SKI..." style="height: 48px;"></textarea>
+                </div>
+                <button class="btn" id="chat-btn" onclick="sendDiscussion()" disabled>
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: RUANG REFLEKSI & PEER REVIEW -->
+        <div id="view-reflection" class="app-view">
+            <!-- Screen A: Pemilihan Topik Refleksi -->
+            <div id="ref-screen-welcome" class="app-view active" style="justify-content: center; align-items: center;">
+                <div class="setup-card" style="max-width: 500px;">
+                    <h2><i class="fa-solid fa-book-open-reader"></i> Pilih Topik Refleksi & Evaluasi</h2>
+                    <p>Pilih bab materi SKI untuk mulai menganalisis studi kasus dan mengevaluasi teman sejawat.</p>
+                    
+                    <div class="form-group">
+                        <label for="ref-materi">Pilih Topik / Bab Diskusi</label>
+                        <select id="ref-materi" onchange="document.getElementById('start-ref-btn').disabled = !this.value">
+                            <option value="" disabled selected>-- Pilih Topik Refleksi --</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" id="start-ref-btn" onclick="startReflection()" disabled><i class="fa-solid fa-comments"></i> Masuk Ruang Refleksi</button>
+                </div>
+            </div>
+
+            <!-- Screen B: Ruang Refleksi Aktif -->
+            <div id="ref-screen-discussion" class="app-view">
+                <div class="reflection-scroll-area">
+                    <div class="discussion-meta">
+                        <h3 id="display-ref-topic-title">Topik: -</h3>
+                        <p>Siswa: <span id="display-ref-student-info" style="font-weight: 600; color: var(--primary);"></span> | Status: <span style="color: var(--success); font-weight: 600;">Refleksi Aktif</span></p>
+                    </div>
+
+                    <div class="case-study-box">
+                        <h4><i class="fa-solid fa-lightbulb"></i> Studi Kasus & Pertanyaan Pemantik</h4>
+                        <p id="case-study-text">Memuat studi kasus...</p>
+                    </div>
+
+                    <div class="post-input-section">
+                        <h4><i class="fa-solid fa-pen-nib" style="color: var(--primary);"></i> Tuliskan Refleksi / Argumen Analitis Anda</h4>
+                        <div class="form-group" style="margin-bottom: 8px;">
+                            <textarea id="student-opinion" rows="3" placeholder="Tuliskan argumen analitis berdasarkan pemahaman materi Anda..."></textarea>
+                        </div>
+                        <button class="btn" onclick="submitOpinion()"><i class="fa-solid fa-paper-plane"></i> Kirim Refleksi ke Forum</button>
+                    </div>
+
+                    <h4 style="font-size: 15px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
+                        <span><i class="fa-solid fa-comments" style="color: var(--primary);"></i> Tanggapan & Peer Review Teman</span>
+                        <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">Beri ulasan/like pada pendapat teman</span>
+                    </h4>
+
+                    <div class="posts-container" id="posts-container">
+                        <!-- Postingan refleksi interaktif dimuat di sini -->
+                    </div>
+                </div>
+
+                <button class="btn" id="finish-btn" onclick="finishReflection()" style="background-color: var(--success); margin-top: 8px;"><i class="fa-solid fa-circle-check"></i> Selesaikan & Simpan Refleksi</button>
+            </div>
+
+            <!-- Screen C: Hasil & Rekap Refleksi -->
+            <div id="ref-screen-result" class="app-view" style="justify-content: center; align-items: center;">
+                <div class="result-box">
+                    <div class="score-circle" id="final-score">95</div>
+                    <div class="result-title" style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Refleksi & Evaluasi Selesai!</div>
+                    <p class="result-desc" style="color: var(--text-muted); font-size: 13px; margin-bottom: 16px;">Terima kasih telah aktif berpartisipasi memberikan analisis dan peer review.</p>
+                    <div class="status-badge" style="display: flex;"><i class="fa-solid fa-circle-check"></i> Partisipasi dan nilai refleksi tersimpan!</div>
+                    <button class="btn btn-secondary" onclick="restartReflection()" style="margin-top: 16px;"><i class="fa-solid fa-rotate-right"></i> Pilih Topik Lain</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbEHCoiqB7RroKf60n6TJbvKP9EvlOyKgHLM-6eOXVLBnVAvlZDsfhSTgZztNYe4C5/exec';
+
+    let studentName = "";
+    let studentClass = "";
+    let globalStudentData = [];
+    let currentStudentObj = null;
+    let pollInterval = null;
+
+    // Daftar Topik Refleksi per Kelas
+    const topikDiskusiPerKelas = {
+        "7": [
+            { title: "Bab 1 : Strategi Dakwah Nabi di Makkah", case: "Mengapa kaum Quraisy begitu gigih menentang dakwah Nabi Muhammad SAW padahal beliau dikenal sebagai Al-Amin? Analisis faktor ekonomi dan sosial budayanya." },
+            { title: "Bab 2 : Piagam Madinah & Masyarakat Majemuk", case: "Bagaimana Piagam Madinah menjadi tonggak sejarah modern dalam mengatur toleransi antarumat beragama di masyarakat plural?" },
+            { title: "Bab 3 : Kepemimpinan Khulafaurrasyidin", case: "Dari keempat Khulafaurrasyidin, teladan apa yang paling relevan diterapkan pemimpin masa kini dalam hal transparansi dan keadilan?" }
+        ],
+        "8": [
+            { title: "Bab 1 & 2 : Baitul Hikmah & Golden Age Abbasiyah", case: "Apa kunci utama keberhasilan ilmuwan muslim masa Daulah Abbasiyah dalam memadukan sains universal dengan nilai Islam?" },
+            { title: "Bab 3 & 4 : Semangat Persatuan Salahuddin al-Ayyubi", case: "Bagaimana cara Salahuddin al-Ayyubi merajut persatuan umat Islam lintas wilayah untuk membebaskan Baitulmaqdis?" },
+            { title: "Bab 5 : Daulah Mamluk sebagai Benteng Peradaban", case: "Mengapa pasukan Mamluk yang berlatar belakang budak militer mampu menghentikan invasi Mongol yang sangat kejam?" }
+        ],
+        "9": [
+            { title: "Bab 1 & 2 : Jalur Masuk & Kerajaan Islam Nusantara", case: "Analisis mengapa pendekatan damai melalui perdagangan dan tasawuf lebih efektif dalam islamisasi Nusantara dibandingkan penaklukan militer." },
+            { title: "Bab 3 & 5 : Peran Pesantren & Walisanga", case: "Bagaimana strategi dakwah kultural Walisanga (seperti wayang & kesenian lokal) dapat diterima tanpa menghilangkan akidah tauhid?" },
+            { title: "Bab 4 & 6 : Kearifan Lokal & Ulama Nusantara", case: "Berikan contoh kearifan lokal di daerahmu yang selaras dengan nilai Islam dan bagaimana cara melestarikannya." }
+        ]
+    };
+
+    let activePosts = [
+        { id: 1, author: "Siti Rahma", class: "8A", time: "10 menit lalu", text: "Menurut analisis saya, kunci sukses Baitul Hikmah adalah sikap terbuka para khalifah Abbasiyah yang menghargai riset ilmiah tanpa memandang latar belakang agama penulisnya.", likes: 4, peerReview: "Analisis sangat tajam dan objektif." },
+        { id: 2, author: "Ahmad Fauzan", class: "8B", time: "25 menit lalu", text: "Betul sekali. Selain itu, dukungan finansial besar dari Baitulmal membuat para ilmuwan fokus eksperimen laboratorium tanpa memikirkan masalah ekonomi.", likes: 3, peerReview: "Argumen didukung fakta sejarah yang kuat." }
+    ];
+    let currentTopicData = null;
+
+    window.onload = function() {
+        let savedName = localStorage.getItem('chatLoggedInName');
+        let savedClass = localStorage.getItem('chatLoggedInClass');
+
+        if (savedName && savedClass) {
+            studentName = savedName;
+            studentClass = savedClass;
+            showMainApp();
+        } else {
+            fetchStudentsData();
+        }
+    };
+
+    function fetchStudentsData() {
+        fetch(SCRIPT_URL + '?action=getStudents')
+        .then(response => response.json())
+        .then(data => {
+            globalStudentData = data;
+            populateClassDropdown();
+        })
+        .catch(err => {
+            console.error("Gagal memuat data siswa:", err);
+            document.getElementById("kelasSelect").innerHTML = '<option value="">Gagal memuat data dari server</option>';
+        });
+    }
+
+    function populateClassDropdown() {
+        const kelasSelect = document.getElementById("kelasSelect");
+        let classes = [...new Set(globalStudentData.map(item => item.kelas))].sort();
+        
+        kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+        classes.forEach(kelas => {
+            let option = document.createElement("option");
+            option.value = kelas;
+            option.textContent = "Kelas " + kelas;
+            kelasSelect.appendChild(option);
+        });
+    }
+
+    function updateNameDropdown() {
+        const selectedKelas = document.getElementById("kelasSelect").value;
+        const namaSelect = document.getElementById("namaSelect");
+        
+        namaSelect.innerHTML = '<option value="">-- Pilih Nama Siswa --</option>';
+        document.getElementById("dynamic-auth-area").style.display = "none";
+        
+        if (!selectedKelas) {
+            namaSelect.disabled = true;
+            return;
+        }
+
+        let filteredStudents = globalStudentData.filter(item => item.kelas === selectedKelas);
+        filteredStudents.sort((a, b) => a.nama.localeCompare(b.nama));
+
+        filteredStudents.forEach(student => {
+            let option = document.createElement("option");
+            option.value = student.nama;
+            option.textContent = student.nama;
+            namaSelect.appendChild(option);
+        });
+
+        namaSelect.disabled = false;
+    }
+
+    function checkStudentStatus() {
+        const selectedNama = document.getElementById("namaSelect").value;
+        const selectedKelas = document.getElementById("kelasSelect").value;
+        const authArea = document.getElementById("dynamic-auth-area");
+        const registerFields = document.getElementById("register-fields");
+        const loginFields = document.getElementById("login-fields");
+
+        if (!selectedNama || !selectedKelas) {
+            authArea.style.display = "none";
+            currentStudentObj = null;
+            return;
+        }
+
+        currentStudentObj = globalStudentData.find(item => item.kelas === selectedKelas && item.nama === selectedNama);
+        if (!currentStudentObj) return;
+
+        authArea.style.display = "block";
+        hideAlert();
+
+        if (!currentStudentObj.hasPassword) {
+            registerFields.style.display = "block";
+            loginFields.style.display = "none";
+            document.getElementById("authBtn").innerHTML = `<i class="fa-solid fa-user-plus"></i> Buat Password & Masuk`;
+        } else {
+            registerFields.style.display = "none";
+            loginFields.style.display = "block";
+            document.getElementById("existingPassword").value = "";
+            document.getElementById("authBtn").innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+        }
+    }
+
+    function showHint() {
+        if (currentStudentObj && currentStudentObj.hint) {
+            showAlert(`Petunjuk Sandi: ${currentStudentObj.hint}`, "info");
+        } else {
+            showAlert("Tidak ada petunjuk sandi yang disimpan untuk akun ini.", "error");
+        }
+    }
+
+    function submitAuth() {
+        const kelas = document.getElementById("kelasSelect").value;
+        const nama = document.getElementById("namaSelect").value;
+        const authBtn = document.getElementById("authBtn");
+
+        if (!currentStudentObj) {
+            showAlert("Silakan pilih ulang kelas dan nama Anda.", "error");
+            return;
+        }
+
+        let isRegistering = !currentStudentObj.hasPassword;
+        let passwordToSend = "";
+
+        if (isRegistering) {
+            let p1 = document.getElementById("newPassword").value.trim();
+            let p2 = document.getElementById("confirmPassword").value.trim();
+
+            if (!p1 || !p2) {
+                showAlert("Password dan konfirmasi password harus diisi!", "error");
+                return;
+            }
+            if (p1.length < 4) {
+                showAlert("Password minimal harus 4 karakter!", "error");
+                return;
+            }
+            if (p1 !== p2) {
+                showAlert("Konfirmasi password tidak cocok!", "error");
+                return;
+            }
+            passwordToSend = p1;
+        } else {
+            let p = document.getElementById("existingPassword").value.trim();
+            if (!p) {
+                showAlert("Masukkan password kamu!", "error");
+                return;
+            }
+            passwordToSend = p;
+        }
+
+        authBtn.disabled = true;
+        authBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memproses...`;
+
+        let actionType = isRegistering ? "registerPassword" : "loginPassword";
+        let url = `${SCRIPT_URL}?action=${actionType}&kelas=${encodeURIComponent(kelas)}&nama=${encodeURIComponent(nama)}&password=${encodeURIComponent(passwordToSend)}&hint=${encodeURIComponent(document.getElementById("passwordHint") ? document.getElementById("passwordHint").value : '')}`;
+
+        fetch(url)
+        .then(response => response.json())
+        .then(response => {
+            if (response.status) {
+                studentName = nama;
+                studentClass = kelas;
+
+                localStorage.setItem('chatLoggedInName', studentName);
+                localStorage.setItem('chatLoggedInClass', studentClass);
+
+                showMainApp();
+            } else {
+                showAlert(response.message, "error");
+                authBtn.disabled = false;
+                authBtn.innerHTML = isRegistering ? `<i class="fa-solid fa-user-plus"></i> Buat Password & Masuk` : `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showAlert("Terjadi kesalahan koneksi ke server.", "error");
+            authBtn.disabled = false;
+            authBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> Masuk Ruang Belajar`;
+        });
+    }
+
+    function showMainApp() {
+        document.getElementById("setup-section").style.display = "none";
+        document.getElementById("nav-tabs").style.display = "flex";
+        document.getElementById("view-chat").classList.add("active");
+        document.getElementById("display-user").innerText = `${studentName} (Kelas ${studentClass})`;
+
+        setupReflectionTopics();
+        fetchDiscussions();
+        if (!pollInterval) {
+            pollInterval = setInterval(fetchDiscussions, 10000); 
+        }
+    }
+
+    function switchTab(tabName) {
+        document.getElementById("tab-btn-chat").classList.remove("active");
+        document.getElementById("tab-btn-reflection").classList.remove("active");
+        document.getElementById("view-chat").classList.remove("active");
+        document.getElementById("view-reflection").classList.remove("active");
+
+        if (tabName === 'chat') {
+            document.getElementById("tab-btn-chat").classList.add("active");
+            document.getElementById("view-chat").classList.add("active");
+        } else {
+            document.getElementById("tab-btn-reflection").classList.add("active");
+            document.getElementById("view-reflection").classList.add("active");
+        }
+    }
+
+    function logoutChat() {
+        localStorage.removeItem('chatLoggedInName');
+        localStorage.removeItem('chatLoggedInClass');
+        if (pollInterval) clearInterval(pollInterval);
+        location.reload();
+    }
+
+    document.getElementById("chat-msg").addEventListener("input", function() {
+        const msg = this.value.trim();
+        document.getElementById("chat-btn").disabled = !msg;
+    });
+
+    function fetchDiscussions() {
+        fetch(SCRIPT_URL + "?action=getDiskusi")
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("chat-container");
+            container.innerHTML = "";
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 40px;">Belum ada topik diskusi. Jadilah yang pertama memulai!</div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                let dateStr = new Date(item.timestamp).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+                let cleanName = (item.name || 'User').replace(/\s*\(.*\)/, '').trim();
+                let avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(cleanName)}&background=059669&color=fff&size=128&bold=true`;
+                
+                let isMyMessage = (item.name === studentName);
+                let bubbleClass = isMyMessage ? "chat-bubble my-message" : "chat-bubble";
+                let nameLabel = isMyMessage ? `${escapeHtml(item.name)} <span style="background: var(--primary); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: normal; margin-left: 6px;">(Anda)</span>` : escapeHtml(item.name);
+
+                let replyHTML = "";
+                if (item.reply && item.reply.trim() !== "") {
+                    replyHTML = `
+                        <div class="teacher-reply">
+                            <div class="teacher-badge"><i class="fa-solid fa-chalkboard-user"></i> Balasan Guru SKI</div>
+                            ${escapeHtml(item.reply)}
+                        </div>
+                    `;
+                }
+
+                let bubble = `
+                    <div class="chat-item">
+                        <img src="${avatarUrl}" alt="${escapeHtml(item.name)}" class="chat-avatar">
+                        <div class="${bubbleClass}">
+                            <div class="chat-user">
+                                <span>${nameLabel}</span>
+                                <span class="chat-time">${dateStr}</span>
+                            </div>
+                            <div class="chat-text">${escapeHtml(item.content)}</div>
+                            ${replyHTML}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += bubble;
+            });
+            container.scrollTop = container.scrollHeight;
+        })
+        .catch(err => {
+            console.error("Gagal memuat diskusi:", err);
+        });
+    }
+
+    function sendDiscussion() {
+        const msg = document.getElementById("chat-msg").value.trim();
+        const chatBtn = document.getElementById("chat-btn");
+
+        if (!msg || !studentName) return;
+
+        chatBtn.disabled = true;
+        chatBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...`;
+
+        const payload = {
+            action: "diskusi",
+            name: studentName,
+            class: studentClass,
+            content: msg
+        };
+
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).then(() => {
+            document.getElementById("chat-msg").value = "";
+            chatBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru`;
+            chatBtn.disabled = true;
+            setTimeout(fetchDiscussions, 1000); 
+        }).catch(err => {
+            alert("Gagal mengirim pesan diskusi.");
+            chatBtn.disabled = false;
+            chatBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Kirim Pertanyaan ke Guru`;
+        });
+    }
+
+    /* --- Logic Ruang Refleksi & Peer Review --- */
+    function setupReflectionTopics() {
+        const materiSelect = document.getElementById('ref-materi');
+        materiSelect.innerHTML = '<option value="" disabled selected>-- Pilih Topik Refleksi --</option>';
+
+        let classKey = studentClass ? studentClass.toString() : "8";
+        let topics = topikDiskusiPerKelas[classKey] || topikDiskusiPerKelas["8"];
+
+        topics.forEach((topik, index) => {
+            const opt = document.createElement('option');
+            opt.value = index;
+            opt.textContent = topik.title;
+            materiSelect.appendChild(opt);
+        });
+    }
+
+    function startReflection() {
+        const materiIndex = document.getElementById('ref-materi').value;
+        if (materiIndex === "") return;
+
+        let classKey = studentClass ? studentClass.toString() : "8";
+        currentTopicData = topikDiskusiPerKelas[classKey][materiIndex];
+
+        document.getElementById('display-ref-topic-title').textContent = currentTopicData.title;
+        document.getElementById('display-ref-student-info').textContent = `${studentName} (Kelas ${studentClass})`;
+        document.getElementById('case-study-text').textContent = currentTopicData.case;
+
+        renderReflectionPosts();
+
+        document.getElementById('ref-screen-welcome').classList.remove('active');
+        document.getElementById('ref-screen-discussion').classList.add('active');
+    }
+
+    function renderReflectionPosts() {
+        const container = document.getElementById('posts-container');
+        container.innerHTML = '';
+        
+        activePosts.forEach(post => {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            card.innerHTML = `
+                <div class="post-header">
+                    <div class="post-author"><i class="fa-solid fa-user-circle" style="color: var(--primary);"></i> ${escapeHtml(post.author)} <span class="post-badge">Kelas ${post.class}</span></div>
+                    <div class="post-time">${post.time}</div>
+                </div>
+                <div class="post-body">${escapeHtml(post.text)}</div>
+                <div class="peer-review-box">
+                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> Review: <em>"${escapeHtml(post.peerReview)}"</em></span>
+                    <button class="action-btn" onclick="givePeerReview(${post.id})"><i class="fa-solid fa-pen"></i> Beri Review</button>
+                </div>
+                <div class="post-footer">
+                    <div class="post-actions">
+                        <button class="action-btn" onclick="likePost(${post.id})"><i class="fa-solid fa-thumbs-up"></i> Suka (${post.likes})</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function submitOpinion() {
+        const opinionText = document.getElementById('student-opinion').value.trim();
+        if (!opinionText || opinionText.length < 5) {
+            alert('Mohon tuliskan refleksi atau argumen analitis minimal 5 karakter.');
+            return;
+        }
+        
+        const newPost = {
+            id: activePosts.length + 1,
+            author: studentName,
+            class: studentClass,
+            time: 'Baru saja',
+            text: opinionText,
+            likes: 0,
+            peerReview: 'Menunggu ulasan sejawat'
+        };
+        
+        activePosts.unshift(newPost);
+        document.getElementById('student-opinion').value = '';
+        renderReflectionPosts();
+        alert('Refleksi berhasil dikirim ke forum!');
+    }
+
+    function likePost(id) {
+        const post = activePosts.find(p => p.id === id);
+        if (post) {
+            post.likes += 1;
+            renderReflectionPosts();
+        }
+    }
+
+    function givePeerReview(id) {
+        const review = prompt("Berikan tanggapan atau evaluasi singkat untuk argumen teman Anda:");
+        if (review) {
+            const post = activePosts.find(p => p.id === id);
+            if (post) {
+                post.peerReview = review;
+                renderReflectionPosts();
+                alert('Peer review berhasil disimpan!');
+            }
+        }
+    }
+
+    function finishReflection() {
+        document.getElementById('ref-screen-discussion').classList.remove('active');
+        document.getElementById('ref-screen-result').classList.add('active');
+    }
+
+    function restartReflection() {
+        document.getElementById('ref-screen-result').classList.remove('active');
+        document.getElementById('ref-screen-welcome').classList.add('active');
+        document.getElementById('ref-materi').selectedIndex = 0;
+        document.getElementById('start-ref-btn').disabled = true;
+    }
+
+    function showAlert(message, type) {
+        const alertBox = document.getElementById("alert-msg");
+        alertBox.textContent = message;
+        alertBox.className = `alert-box alert-${type}`;
+        alertBox.style.display = "block";
+    }
+
+    function hideAlert() {
+        document.getElementById("alert-msg").style.display = "none";
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+</script>
+</body>
+</html>

@@ -585,10 +585,25 @@
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
         currentTopicData = topics[idx];
 
-        hasSubmittedMyReflection = false; 
-        studentMyReflectionText = "";
-        studentPeerReviewData = "-";
-        studentLikesCount = 0;
+        // MEMUAT DATA DARI LOCALSTORAGE JIKA SUDAH PERNAH DIISI SEBELUMNYA
+        let storageKey = `ref_${studentClass}_${studentName}_${currentTopicData.title}`;
+        let savedData = localStorage.getItem(storageKey);
+
+        if (savedData) {
+            let parsed = JSON.parse(savedData);
+            hasSubmittedMyReflection = parsed.submitted;
+            studentMyReflectionText = parsed.text;
+            studentPeerReviewData = parsed.peerReview || "-";
+            studentLikesCount = parsed.likes || 0;
+
+            document.getElementById("student-opinion").value = studentMyReflectionText;
+        } else {
+            hasSubmittedMyReflection = false; 
+            studentMyReflectionText = "";
+            studentPeerReviewData = "-";
+            studentLikesCount = 0;
+            document.getElementById("student-opinion").value = "";
+        }
 
         document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
         document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
@@ -610,6 +625,15 @@
         studentMyReflectionText = text;
         hasSubmittedMyReflection = true;
 
+        // MENYIMPAN KE LOCALSTORAGE AGAR TIDAK HILANG SAAT KELUAR/REFRESH
+        let storageKey = `ref_${studentClass}_${studentName}_${currentTopicData.title}`;
+        localStorage.setItem(storageKey, JSON.stringify({
+            text: studentMyReflectionText,
+            submitted: true,
+            peerReview: studentPeerReviewData,
+            likes: studentLikesCount
+        }));
+
         let newPost = {
             id: Date.now(),
             author: studentName,
@@ -620,10 +644,17 @@
             peerReview: "Menunggu ulasan teman..."
         };
 
-        activePosts.unshift(newPost);
-        document.getElementById("student-opinion").value = "";
+        // Cek apakah postingan user ini sudah ada di activePosts lokal
+        let existingIndex = activePosts.findIndex(p => p.author === studentName);
+        if (existingIndex !== -1 && activePosts[existingIndex].class === studentClass) {
+            activePosts[existingIndex].text = text;
+            activePosts[existingIndex].time = "Baru saja";
+        } else {
+            activePosts.unshift(newPost);
+        }
+
         renderPosts();
-        alert("Refleksi berhasil dikirim ke forum!");
+        alert("Refleksi berhasil dikirim dan tersimpan di perangkat!");
     }
 
     function renderPosts() {

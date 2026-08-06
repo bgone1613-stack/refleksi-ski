@@ -318,13 +318,14 @@
 </div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIyyiGpLFL4yMQ024C813SOfzONHzRx_uPZD4UiiBWyNGpC9fuy9_JEXkekx2cdIVG/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxphetlWfk3PXr8yIvmunrHM6w3SzLGhPul5xHc1Z2cmxafpUUmQTFJO7xnVoxPZ_OO/exec';
 
     let studentName = "";
     let studentClass = "";
     let globalStudentData = [];
     let currentStudentObj = null;
     let hasSubmittedMyReflection = false; // Flag validasi apakah siswa sudah mengirim refleksi
+    let hasGivenAnyPeerReview = false;     // Flag validasi apakah siswa sudah memberi minimal 1 review ke teman
 
     const topikDiskusiPerKelas = {
         "7": [
@@ -584,7 +585,8 @@
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
         currentTopicData = topics[idx];
 
-        hasSubmittedMyReflection = false; // Reset per sesi topik baru
+        hasSubmittedMyReflection = false; 
+        hasGivenAnyPeerReview = false;
         studentMyReflectionText = "";
         studentPeerReviewData = "-";
         studentLikesCount = 0;
@@ -616,13 +618,30 @@
             time: "Baru saja",
             text: text,
             likes: 0,
-            peerReview: "Menunggu ulasan teman..."
+            peerReview: "-"
         };
 
         activePosts.unshift(newPost);
         document.getElementById("student-opinion").value = "";
         renderPosts();
-        alert("Refleksi berhasil dikirim ke forum!");
+
+        // Simpan refleksi awal ke Google Sheets melalui action 'refleksi'
+        let formData = new URLSearchParams({
+            action: 'refleksi',
+            nama: studentName,
+            kelas: studentClass,
+            materi: currentTopicData.title,
+            refleksi: studentMyReflectionText,
+            peerReview: studentPeerReviewData,
+            likes: studentLikesCount
+        });
+
+        fetch(SCRIPT_URL, { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            alert("Refleksi berhasil dikirim dan disimpan ke forum!");
+        })
+        .catch(err => console.error("Gagal simpan refleksi:", err));
     }
 
     function renderPosts() {
@@ -654,7 +673,7 @@
                     </div>
                 </div>
                 <div class="peer-review-box">
-                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> <strong>Ulasan Sejawat:</strong> ${post.peerReview}</span>
+                    <span><i class="fa-solid fa-star" style="color: var(--accent);"></i> <strong>Ulasan Sejawat:</strong> ${post.peerReview || "-"}</span>
                     <button onclick="givePeerReview(${post.id})" style="background: var(--primary); color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">Beri Review</button>
                 </div>
             `;
@@ -670,6 +689,15 @@
                 studentLikesCount = post.likes;
             }
             renderPosts();
+
+            // Sinkronisasi real-time Like ke Google Sheets
+            let updateData = new URLSearchParams({
+                action: 'updateRefleksi',
+                targetName: post.author,
+                targetMateri: currentTopicData.title,
+                likes: post.likes
+            });
+            fetch(SCRIPT_URL, { method: 'POST', body: updateData }).catch(err => console.error("Gagal update like:", err));
         }
     }
 
@@ -680,17 +708,36 @@
         let reviewText = prompt("Tuliskan ulasan atau catatan evaluasi untuk pendapat " + post.author + ":", "Analisis yang sangat komprehensif dan mudah dipahami.");
         if (reviewText && reviewText.trim() !== "") {
             post.peerReview = reviewText.trim();
+            hasGivenAnyPeerReview = true; // Tandai bahwa siswa sudah memberi peer review
+
             if (post.author === studentName) {
                 studentPeerReviewData = post.peerReview;
             }
             renderPosts();
+
+            // Sinkronisasi real-time Peer Review ke Google Sheets
+            let updateData = new URLSearchParams({
+                action: 'updateRefleksi',
+                targetName: post.author,
+                targetMateri: currentTopicData.title,
+                peerReview: post.peerReview
+            });
+            fetch(SCRIPT_URL, { method: 'POST', body: updateData }).catch(err => console.error("Gagal update review:", err));
+            
+            alert("Peer review berhasil disimpan ke sistem!");
         }
     }
 
     function finishReflection() {
-        // VALIDASI: Cek apakah siswa sudah mengirim refleksi ke forum
+        // VALIDASI 1: Cek apakah siswa sudah mengirim refleksi ke forum
         if (!hasSubmittedMyReflection) {
             alert("⚠️ Kamu belum mengirimkan refleksi ke forum! Tulis dan klik 'Kirim Refleksi ke Forum' terlebih dahulu sebelum menyelesaikan tugas ini.");
+            return;
+        }
+
+        // VALIDASI 2: Cek apakah siswa sudah memberikan peer review minimal 1 kali kepada teman
+        if (!hasGivenAnyPeerReview) {
+            alert("⚠️ Maaf, Anda harus memberikan Peer Review (ulasan) kepada teman minimal 1 kali terlebih dahulu sebelum menyelesaikan refleksi!");
             return;
         }
 
@@ -701,7 +748,7 @@
         let randomScore = Math.floor(Math.random() * (100 - 85 + 1)) + 85;
         document.getElementById("final-score").innerText = randomScore;
 
-        // KIRIM DATA KE GOOGLE SHEETS
+        // KIRIM FINAL DATA / VALIDASI AKHIR KE GOOGLE SHEETS
         let formData = new URLSearchParams({
             action: 'saveRefleksi',
             nama: studentName,
@@ -723,7 +770,6 @@
         })
         .catch(err => {
             console.error("Gagal simpan ke sheet:", err);
-            // Tetap pindah ke layar hasil agar siswa tidak kebingungan jika terjadi kendala jaringan sesaat
             document.getElementById("ref-screen-discussion").classList.remove("active");
             document.getElementById("ref-screen-result").classList.add("active");
         });

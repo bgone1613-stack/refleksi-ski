@@ -282,11 +282,11 @@
                     </div>
 
                     <div class="post-input-section">
-                        <h4><i class="fa-solid fa-pen-nib" style="color: var(--primary);"></i> Tuliskan Refleksi / Argumen Analitis Anda</h4>
+                        <h4><i class="fa-solid fa-pen-nib" style="color: var(--primary);"></i> Tuliskan / Edit Refleksi & Argumen Analitis Anda</h4>
                         <div class="form-group" style="margin-bottom: 8px;">
                             <textarea id="student-opinion" rows="3" placeholder="Tuliskan argumen analitis berdasarkan pemahaman materi Anda..."></textarea>
                         </div>
-                        <button class="btn" onclick="submitOpinion()"><i class="fa-solid fa-paper-plane"></i> Kirim Refleksi ke Forum</button>
+                        <button class="btn" onclick="submitOpinion()"><i class="fa-solid fa-paper-plane"></i> Perbarui / Kirim Refleksi ke Forum</button>
                     </div>
 
                     <h4 style="font-size: 15px; margin-top: 4px; display: flex; align-items: center; justify-content: space-between;">
@@ -585,20 +585,67 @@
         let topics = topikDiskusiPerKelas[baseLevel] || topikDiskusiPerKelas["8"];
         currentTopicData = topics[idx];
 
-        hasSubmittedMyReflection = false; 
-        hasGivenAnyPeerReview = false;
-        studentMyReflectionText = "";
-        studentPeerReviewData = "-";
-        studentLikesCount = 0;
+        const startBtn = document.getElementById("start-ref-btn");
+        startBtn.disabled = true;
+        startBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa Data Sheet...`;
 
-        document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
-        document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
-        document.getElementById("case-study-text").innerText = currentTopicData.case;
+        // Membaca data dari Google Sheet untuk topik ini
+        let checkUrl = `${SCRIPT_URL}?action=getStudentReflection&nama=${encodeURIComponent(studentName)}&kelas=${encodeURIComponent(studentClass)}&materi=${encodeURIComponent(currentTopicData.title)}`;
 
-        document.getElementById("ref-screen-welcome").classList.remove("active");
-        document.getElementById("ref-screen-discussion").classList.add("active");
-        
-        renderPosts();
+        fetch(checkUrl)
+        .then(res => res.json())
+        .then(data => {
+            startBtn.disabled = false;
+            startBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Masuk Ruang Refleksi`;
+
+            if (data && data.found) {
+                // Jika siswa sudah pernah mengisi sebelumnya di sheet
+                hasSubmittedMyReflection = true;
+                hasGivenAnyPeerReview = true; // Dianggap valid karena sudah tersimpan di sheet
+                studentMyReflectionText = data.refleksi || "";
+                studentPeerReviewData = data.peerReview || "-";
+                studentLikesCount = data.likes || 0;
+
+                document.getElementById("student-opinion").value = studentMyReflectionText;
+            } else {
+                hasSubmittedMyReflection = false;
+                hasGivenAnyPeerReview = false;
+                studentMyReflectionText = "";
+                studentPeerReviewData = "-";
+                studentLikesCount = 0;
+                document.getElementById("student-opinion").value = "";
+            }
+
+            document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
+            document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
+            document.getElementById("case-study-text").innerText = currentTopicData.case;
+
+            document.getElementById("ref-screen-welcome").classList.remove("active");
+            document.getElementById("ref-screen-discussion").classList.add("active");
+            
+            renderPosts();
+        })
+        .catch(err => {
+            console.error("Gagal memeriksa data sheet:", err);
+            startBtn.disabled = false;
+            startBtn.innerHTML = `<i class="fa-solid fa-comments"></i> Masuk Ruang Refleksi`;
+
+            hasSubmittedMyReflection = false;
+            hasGivenAnyPeerReview = false;
+            studentMyReflectionText = "";
+            studentPeerReviewData = "-";
+            studentLikesCount = 0;
+            document.getElementById("student-opinion").value = "";
+
+            document.getElementById("display-ref-topic-title").innerText = currentTopicData.title;
+            document.getElementById("display-ref-student-info").innerText = `${studentName} (${studentClass})`;
+            document.getElementById("case-study-text").innerText = currentTopicData.case;
+
+            document.getElementById("ref-screen-welcome").classList.remove("active");
+            document.getElementById("ref-screen-discussion").classList.add("active");
+            
+            renderPosts();
+        });
     }
 
     function submitOpinion() {
@@ -617,15 +664,15 @@
             class: studentClass,
             time: "Baru saja",
             text: text,
-            likes: 0,
-            peerReview: "-"
+            likes: studentLikesCount,
+            peerReview: studentPeerReviewData
         };
 
         activePosts.unshift(newPost);
         document.getElementById("student-opinion").value = "";
         renderPosts();
 
-        // Simpan refleksi awal ke Google Sheets melalui action 'refleksi'
+        // Simpan / Perbarui refleksi ke Google Sheets
         let formData = new URLSearchParams({
             action: 'refleksi',
             nama: studentName,
@@ -639,7 +686,7 @@
         fetch(SCRIPT_URL, { method: 'POST', body: formData })
         .then(res => res.json())
         .then(data => {
-            alert("Refleksi berhasil dikirim dan disimpan ke forum!");
+            alert("Refleksi berhasil diperbarui dan disimpan ke forum!");
         })
         .catch(err => console.error("Gagal simpan refleksi:", err));
     }
@@ -690,7 +737,6 @@
             }
             renderPosts();
 
-            // Sinkronisasi real-time Like ke Google Sheets
             let updateData = new URLSearchParams({
                 action: 'updateRefleksi',
                 targetName: post.author,
@@ -708,14 +754,13 @@
         let reviewText = prompt("Tuliskan ulasan atau catatan evaluasi untuk pendapat " + post.author + ":", "Analisis yang sangat komprehensif dan mudah dipahami.");
         if (reviewText && reviewText.trim() !== "") {
             post.peerReview = reviewText.trim();
-            hasGivenAnyPeerReview = true; // Tandai bahwa siswa sudah memberi peer review
+            hasGivenAnyPeerReview = true;
 
             if (post.author === studentName) {
                 studentPeerReviewData = post.peerReview;
             }
             renderPosts();
 
-            // Sinkronisasi real-time Peer Review ke Google Sheets
             let updateData = new URLSearchParams({
                 action: 'updateRefleksi',
                 targetName: post.author,
@@ -729,13 +774,11 @@
     }
 
     function finishReflection() {
-        // VALIDASI 1: Cek apakah siswa sudah mengirim refleksi ke forum
         if (!hasSubmittedMyReflection) {
-            alert("⚠️ Kamu belum mengirimkan refleksi ke forum! Tulis dan klik 'Kirim Refleksi ke Forum' terlebih dahulu sebelum menyelesaikan tugas ini.");
+            alert("⚠️ Kamu belum mengirimkan refleksi ke forum! Tulis dan klik 'Perbarui / Kirim Refleksi ke Forum' terlebih dahulu sebelum menyelesaikan tugas ini.");
             return;
         }
 
-        // VALIDASI 2: Cek apakah siswa sudah memberikan peer review minimal 1 kali kepada teman
         if (!hasGivenAnyPeerReview) {
             alert("⚠️ Maaf, Anda harus memberikan Peer Review (ulasan) kepada teman minimal 1 kali terlebih dahulu sebelum menyelesaikan refleksi!");
             return;
@@ -748,7 +791,6 @@
         let randomScore = Math.floor(Math.random() * (100 - 85 + 1)) + 85;
         document.getElementById("final-score").innerText = randomScore;
 
-        // KIRIM FINAL DATA / VALIDASI AKHIR KE GOOGLE SHEETS
         let formData = new URLSearchParams({
             action: 'saveRefleksi',
             nama: studentName,
